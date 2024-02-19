@@ -38,6 +38,13 @@ class SecurityController extends AbstractController
         {
             // Redirect to login if no user is authenticated
             return $this->redirectToRoute('app_login');
+        }else
+        {
+            if($user->getStatus() == "inactive")
+            {
+                $this->addFlash('failed','User Account not already activated');
+                return $this->redirectToRoute('app_login');
+            }
         }
         $role = $user->getRole();
     
@@ -48,7 +55,7 @@ class SecurityController extends AbstractController
             case 'agence':
                 return $this->render('user/homeONagence.html.twig');
             case 'employé':
-                return $this->render('user/homeONemploye.html.twig');
+                return $this->render('user/homeONemployé.html.twig');
             default:
             
                 break;

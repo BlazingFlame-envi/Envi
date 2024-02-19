@@ -23,10 +23,14 @@ class UserController extends AbstractController
     }
 
     #[Route('/user', name: 'app_user')]
-    public function index(UserRepository $authorRepository): Response
+    public function index_front(UserRepository $fournisseurRepository): Response
     {
-        $authorss=$authorRepository->findAll();
-        return $this->render('basefront.html.twig');
+               $authors=$fournisseurRepository->findAll(); 
+
+         return $this->render('user/account.html.twig', array(
+            'authors' => $authors,
+            
+        ));
     }
     #[Route('/user/fedit/{id}', name: 'app_user_fedit')]
     public function fedit(Request $request,$id ,EntityManagerInterface $entityManagerInterface , UserRepository $authorRepository)
@@ -69,16 +73,7 @@ class UserController extends AbstractController
       // die();
     }
 
-    #[Route('/user/delete/{id}', name: 'app_user_delete')]
-    public function delete($id ,EntityManagerInterface $entityManagerInterface , UserRepository $authorRepository)
-    {
-       $author = $authorRepository->find($id);
-       $entityManagerInterface->remove($author);
-       $entityManagerInterface->flush();
-       return $this->redirectToRoute('app_user_fnew');
-       dd($author);
-       
-    }
+    
     #[Route('/afficheruser', name: 'app_user1')]
     public function index3(UserRepository $authorRepository): Response
     {
@@ -89,4 +84,75 @@ class UserController extends AbstractController
             
         ]);
     }
+    #[Route('/user/delete/{id}', name: 'app_user_back_delete')]
+    public function delete($id ,EntityManagerInterface $entityManagerInterface , UserRepository $authorRepository)
+    {
+       $author = $authorRepository->find($id);
+       $entityManagerInterface->remove($author);
+       $entityManagerInterface->flush();
+       return $this->redirectToRoute('app_user_back');
+       dd($author);
+       
+    }
+    #[Route('/user/back', name: 'app_user_back')]
+    public function index_back(UserRepository $fournisseurRepository): Response
+    {
+               $authors=$fournisseurRepository->findAll(); 
+
+         return $this->render('user/afficher_back.html.twig', array(
+            'authors' => $authors,
+            
+        ));
+    }
+    #[Route('/user/fnew/back', name: 'app_user_fnew_back')]
+    public function fnew_back(Request $request , EntityManagerInterface $entityManagerInterface)
+    {
+       $author = new User();
+       
+       $form=$this->createForm(UserFormType::class,$author);
+       $form->handleRequest($request);
+       if($form->isSubmitted() && $form->isValid() ){
+        $author=$form->getData();
+        $password=$author->getPassword();
+        $hashedpassword= $this->hasher->hashPassword(
+            $author,
+            $password
+        );
+        $author->setMotdepasse($hashedpassword);
+       $entityManagerInterface->persist($author);
+       $entityManagerInterface->flush();
+       return $this->redirectToRoute('app_user_back');
+       }
+       return $this->render('user/ajouter_back.html.twig',['form'=> $form->createView(),]);
+      // dump($author);
+      // die();
+    }
+    #[Route('/{id}', name: 'user_active')]
+    public function user_active($id, EntityManagerInterface $entityManager): Response
+    {
+        $user = new User();
+        if(!$id) {
+            throw $this->createNotFoundException('No ID found');
+        }
+        $user = $entityManager->getRepository(User::class)->find($id);
+        if($user != null) {
+            $user->setStatus("active");
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('app_user_back');
+    }
+    #[Route('/{id}/inactive', name: 'user_inactive')]
+public function user_inactive($id, EntityManagerInterface $entityManager): Response
+{
+    $user = $entityManager->getRepository(User::class)->find($id);
+
+    if (!$user) {
+        throw $this->createNotFoundException('User not found');
+    }
+
+    $user->setStatus("inactive");
+    $entityManager->flush();
+
+    return $this->redirectToRoute('app_user_back');
+}
 }

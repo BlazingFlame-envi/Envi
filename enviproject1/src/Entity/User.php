@@ -9,7 +9,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['mail'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -52,13 +54,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $mail = null;
 
    
-    #[Assert\NotBlank]
-    #[Assert\IsTrue(message: 'The password cannot match your first name')]
+    
+    #[Assert\IsTrue(
+        message: 'The password cannot match your first name.',
+    )]
     public function isPasswordSafe(): bool
     {
         return $this->nom !== $this->motdepasse;
     }
-    
+    #[Assert\Regex(
+        pattern: '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{8,}$/',
+        message: 'Your password is too weak. Please include at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+    )]
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $motdepasse = null;
 
@@ -66,6 +74,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $DN = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $status = "inactive";
 
     public function getId(): ?int
     {
@@ -166,5 +177,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // Implement to return the username of the user
         return $this->mail;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }

@@ -14,7 +14,7 @@
                         
                             <div class="card-body">
                                 
-<h1 class="text-white"> create compte </h1>
+<h1 class="text-white"> Modify Compte </h1>
 {{form_start(form,{'attr':{'novalidate':'novalidate', 'class': 'text-white','class': 'text-danger'}})}}
 {{form_label(form.nom,"Name", {'label_attr': {'class': 'text-white'}})}}
 {{form_errors(form.nom, {'attr': {'class': 'text-danger'}})}}
@@ -24,10 +24,7 @@
 {{form_errors(form.prenom, {'attr': {'class': 'text-danger'}})}}
 {{form_widget(form.prenom, {'attr': {'class': 'form-control'}})}}
 <br>
-{{form_label(form.role,"Role", {'label_attr': {'class': 'text-white'}})}}
-{{form_errors(form.role, {'attr': {'class': 'text-danger'}})}}
-{{ form_widget(form.role, {'attr': {'class': 'form-control', 'disabled': 'disabled'}, 'value': form.vars.value.role|default('defaultValue')}) }}
-<br> 
+
 {{form_label(form.mail,"Email", {'label_attr': {'class': 'text-white'}})}}
 {{form_errors(form.mail, {'attr': {'class': 'text-danger'}})}}
 {{form_widget(form.mail, {'attr': {'class': 'form-control'}})}}

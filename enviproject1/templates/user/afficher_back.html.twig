@@ -1,0 +1,70 @@
+{% extends 'baseback.html.twig' %}
+{% block body %}
+        <div class="content-body">
+            <div class="container-fluid mt-3">
+                <div class="row">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table class="table table-xs mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Lastname</th>
+                                                    <th>Role</th>
+                                                    <th>Email</th>
+                                                    <th>Date of birth</th>
+                                                    <th>Statut</th>
+                                                    <th>Access</th>
+                                                     <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                              {% for author in authors %}
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ author.getId() }}</td>
+                                                    <td>{{ author.getNom() | upper }}</td>
+                                                    <td>
+                                                        <span>{{ author.getPrenom() }}</span>
+                                                    </td>
+                                                    <td>
+                                                       {{ author.getRole() }}
+                                                    </td>
+                                                    <td> {{ author.getMail() }}</td>
+                                                    <td>
+                                                        {{ author.getDN() }}
+                                                    </td>
+                                                     <td>
+                                                        {{ author.getStatus() }}
+                                                    </td>
+                                                   <td>
+                                                   <a href="{{ path('user_active', {'id': author.getId()}) }}"><i class="fa">&#xf00c;</i></a>
+                                                   <a href="{{ path('user_inactive', {'id': author.getId()}) }}"><i class="fa">&#xf00d;</i></a>
+                                                   </td>
+                                                     <td>
+                                                   <a href="{{ path('app_user_back_delete', {'id': author.getId()}) }}" ><i class="fa">&#xf014;</i></a>
+                                                   </td>
+                                            </tbody>
+                                              {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+               
+
+                
+
+               
+            </div>
+            <!-- #/ container -->
+        </div>
+        {% endblock %}
+       

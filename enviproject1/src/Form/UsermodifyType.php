@@ -14,7 +14,6 @@ class UsermodifyType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
-            ->add('role')
             ->add('mail')
             ->add('DN')
         ;
