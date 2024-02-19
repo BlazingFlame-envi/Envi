@@ -1,0 +1,170 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[Assert\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 4,
+        max: 50,
+        minMessage: 'Your first name must be at least {{ limit }} characters long',
+        maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
+    )]
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+    
+    #[Assert\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 4,
+        max: 50,
+        minMessage: 'Your second name must be at least {{ limit }} characters long',
+        maxMessage: 'Your second name cannot be longer than {{ limit }} characters',
+    )]
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
+
+    #[Assert\NotBlank]
+    #[Assert\Choice(['agence', 'benevole','employé'])]
+    #[ORM\Column(length: 255)]
+    private ?string $role = null;
+
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 255)]
+    private ?string $mail = null;
+
+   
+    #[Assert\NotBlank]
+    #[Assert\IsTrue(message: 'The password cannot match your first name')]
+    public function isPasswordSafe(): bool
+    {
+        return $this->nom !== $this->motdepasse;
+    }
+    
+    #[ORM\Column(length: 255)]
+    private ?string $motdepasse = null;
+
+    #[Assert\Date]
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 255)]
+    private ?string $DN = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): static
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function getMail(): ?string
+    {
+        return $this->mail;
+    }
+
+    public function setMail(string $mail): static
+    {
+        $this->mail = $mail;
+
+        return $this;
+    }
+
+    public function getMotdepasse(): ?string
+    {
+        return $this->motdepasse;
+    }
+    public function getPassword(): ?string
+    {
+        return $this->motdepasse;
+    }
+
+    public function setMotdepasse(string $motdepasse): static
+    {
+        $this->motdepasse = $motdepasse;
+
+        return $this;
+    }
+
+    public function getDN(): ?string
+    {
+        return $this->DN;
+    }
+
+    public function setDN(string $DN): static
+    {
+        $this->DN = $DN;
+
+        return $this;
+    }
+    public function getRoles(): array
+    {
+        // Return an array of roles for the user, e.g., ['ROLE_USER']
+        return ['ROLE_USER'];
+    }
+    public function eraseCredentials()
+    {
+        // Implement if you store any temporary, sensitive data on the user
+    }
+
+    public function getSalt()
+    {
+        // Implement if you are not using a modern algorithm for password hashing
+        // This method is deprecated in Symfony 5.3 and removed in Symfony 6
+    }
+    public function getUsername(): string
+    {
+        // Implement to return the username of the user
+        return $this->mail;
+    }
+}

@@ -1,0 +1,124 @@
+{% extends 'homeback.html.twig' %}
+
+{% block body %}
+<style>
+    .example-wrapper {
+        margin: 1em auto;
+        max-width: 960px;
+        width: 95%;
+        font: 16px/1.5 Arial, sans-serif;
+        overflow-x: auto;
+    }
+    .example-wrapper table {
+            
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #f9f9f9;
+        border: 2px solid #333; /* Added contour to the table */
+        box-shadow: 3px 2px 1px rgba(0,0,0,1); /* Slight shadow for depth */
+
+        
+    }
+    .example-wrapper th, .example-wrapper td {
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        text-align: left;
+
+    }
+    .example-wrapper th {
+        background-color: #7571f9;
+        color: white;
+
+
+    }
+    .example-wrapper tr:nth-child(even) {background-color: #f2f2f2;}
+    .example-wrapper a {
+        color: #fff;
+        text-decoration: none;
+        padding: 6px 12px;
+        background-color: #000;
+        border-radius: 4px 4px 10px 10px; /* Button-like appearance */
+        box-shadow: 0 2px 2px rgba(0,0,0,0.5); /* Slight shadow for depth */
+
+    }
+    .example-wrapper a.edit {
+        background-color: #000000; /* Distinct color for 'Edit' */
+    }
+    .example-wrapper a.delete {
+        background-color: #000000; /* Distinct color for 'Delete' */
+    }
+    .example-wrapper .add-equipment {
+        display: inline-block; /* Adjusted for button-like appearance */
+        background-color: #28a745; /* Distinct color for 'Ajouter équipement' */
+        margin-top: 20px;
+        padding: 10px 15px;
+        color: #fff;
+        border-radius: 4px;
+        box-shadow: 2px 2px 2px rgba(0,0,0,1);
+    }
+    .example-wrapper a:hover, .example-wrapper .add-equipment:hover {
+        opacity: 0.8; /* Consistent hover effect */
+    }
+    .example-wrapper .actions {
+        text-align: center;
+    }
+</style>
+
+     <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_back') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ path('app_back') }}">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+
+
+          
+<div class="example-wrapper">
+            <div class="container-fluid">
+            
+					<div class="col-12">
+						<table>
+						<tr>
+        <th>ID</th>
+        <th>Nom</th>
+		<th>Email</th>
+        <th>Action</th>
+    </tr>
+						{% for partenaire in partenaires %}
+
+    
+    <tr>
+        <td>
+            {{ partenaire.getId() }}
+        </td>
+        <td>
+            {{ partenaire.getNomE() }}
+			        <td>
+
+			          {{  partenaire.getMailE() }}
+						        </td>
+
+        </td>
+        <td>
+            <a href="{{ path('app_partenaireback_delete', {id: partenaire.getId()}) }}" class="btn btn-danger">Delete</a>
+            <a href="{{ path('app_partback_fedit', {id: partenaire.getId()}) }}" class="btn btn-primary btn-lg">Edit</a>
+        </td>
+    </tr>
+						{% endfor %}
+						
+
+</table>
+
+</div>
+</div>
+            </div>
+            <!-- #/ container -->
+            
+
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'homeback.html.twig' %}
+
+{% block body %}
+
+
+     <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_back') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ path('app_back') }}">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+
+
+          
+
+            <div class="container-fluid">
+<div class="col-sm-6 col-md-4">
+{{form_start(f,{'attr':{'novalidate':'novalidate'}}) }}
+{{form_row(f.nom_e, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.nom_e)}}
+    </div>
+
+<div class="col-sm-6 col-md-4">
+{{form_row(f.emplacement, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.emplacement)}}
+ </div>
+<br>
+<div class="col-sm-6 col-md-4">
+{{form_row(f.tel, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.tel)}}
+ </div>
+<br>
+<div class="col-sm-6 col-md-4">
+{{form_row(f.mail_e, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.mail_e)}}
+</div>
+<br>
+
+
+
+
+<br>
+{{form_end(f)}}
+
+            </div>
+            <!-- #/ container -->
+            
+        
+
+</div>
+{% endblock %}
