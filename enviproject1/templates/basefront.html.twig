@@ -26,7 +26,7 @@
               Homepage <i class="tf-ion-chevron-down"></i>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="index.html">Homepage</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_partenaire') }}">Homepage</a></li>
               <li><a class="dropdown-item" href="onepage-slider.html">Onepage</a></li>
               <li><a class="dropdown-item" href="onepage-text.html">Onepage 2</a></li>
 									
@@ -40,14 +40,26 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="about.html">About Us</a>
+        <li class="nav-item ">
+           <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown03" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Partenaire et Offre <i class="tf-ion-chevron-down"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown02">
+              <li><a class="dropdown-item" href="{{ path('app_partenaire1') }}">Afficher Partenaire</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_partenaire_fnew') }}">Ajouter Partenaire</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_offre') }}">Offre</a></li>
+									
+          
+            </ul>
+          </li>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="service.html">Services</a>
+            <a class="nav-link" href="{{ path('app_back') }}">back</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="portfolio.html">Portfolio</a>
+            <a class="nav-link" href="{{ path('shop') }}">Shop</a>
           </li>
           <li class="nav-item ">
             <a class="nav-link" href="team.html">Team</a>
@@ -84,10 +96,10 @@
 {% endblock %}
 
 
-{% block body %}
+{% block image %}
 <body id="body">
 <div class="hero-slider">
-	<div class="slider-item th-fullpage hero-area" style="background-image: url({{ asset('images/slider/slider-bg-11.jpg')}});">
+	<div class="slider-item th-fullpage hero-area" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 text-center">
@@ -96,13 +108,13 @@
 					<p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">Lorem ipsum dolor sit amet,
 						consectetur adipisicing elit. Quod, <br> veritatis tempore nostrum id
 						officia quaerat eum corrupti, <br> ipsa aliquam velit.</p>
-					<a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn btn-main"
+					<a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn btn-success"
 						href="service.html">Explore Us</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="slider-item th-fullpage hero-area" style="background-image: url({{ asset('images/slider/slider-bg-2.jpg)')}};">
+	<div class="slider-item th-fullpage hero-area" style="background-image: url({{ asset('front/images/slider/envi.jpg)')}};">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 text-center">
@@ -111,14 +123,15 @@
 					<p data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".5">Create just what you need
 						for your Perfect Website. Choose from a wide range
 						<br> of Elements & simply put them on our Canvas.</p>
-					<a data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8" class="btn btn-main"
+					<a data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8" class="btn btn-success"
 						href="service.html">Explore Us</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
+{% endblock %}
+{% block body %}
 <!--
 Start About Section
 ==================================== -->
@@ -140,7 +153,7 @@ Start About Section
     <div class="row">
 
       <div class="col-md-4 text-center d-none d-md-block">
-        <img loading="lazy" src="{{ asset('images/about/member.jpg')}}" class="img-fluid inline-block" alt="">
+        <img loading="lazy" src="{{ asset('front/images/about/member.jpg')}}" class="img-fluid inline-block" alt="">
       </div>
       <div class="col-md-8">
         <div class="row text-center">
@@ -199,7 +212,7 @@ Start About Section
 		<div class="row">
 
 			<div class="col-md-6 mb-4 mb-md-0">
-				<img loading="lazy" src="{{ asset('images/about/about-2.png')}}" class="img-fluid" alt="">
+				<img loading="lazy" src="{{ asset('front/images/about/about-2.png')}}" class="img-fluid" alt="">
 			</div>
 			<div class="col-md-6">
 				<ul class="checklist">
@@ -316,7 +329,7 @@ Start Counter Section
 							<!-- /client info -->
 							<!-- client photo -->
 							<div class="client-thumb">
-								<img loading="lazy" src="{{ asset('images/client-logo/clients-1.jpg')}}" class="img-fluid" alt="">
+								<img loading="lazy" src="{{ asset('front/images/client-logo/clients-1.jpg')}}" class="img-fluid" alt="">
 							</div>
 							<div class="client-meta">
 								<h3>William Martin</h3>
@@ -336,7 +349,7 @@ Start Counter Section
 							<!-- /client info -->
 							<!-- client photo -->
 							<div class="client-thumb">
-								<img loading="lazy" src="{{ asset('images/client-logo/clients-2.jpg')}}" class="img-fluid" alt="">
+								<img loading="lazy" src="{{ asset('front/images/client-logo/clients-2.jpg')}}" class="img-fluid" alt="">
 							</div>
 							<div class="client-meta">
 								<h3>Emma Harrison</h3>
@@ -356,7 +369,7 @@ Start Counter Section
 							<!-- /client info -->
 							<!-- client photo -->
 							<div class="client-thumb">
-								<img loading="lazy" src="{{ asset('images/client-logo/clients-3.jpg')}}" class="img-fluid" alt="">
+								<img loading="lazy" src="{{ asset('front/images/client-logo/clients-3.jpg')}}" class="img-fluid" alt="">
 							</div>
 							<div class="client-meta">
 								<h3>Alexander Lucas</h3>
@@ -393,7 +406,7 @@ Start Blog Section
 			<article class="col-lg-4 col-md-6">
 				<div class="post-item">
 					<div class="media-wrapper">
-						<img loading="lazy" src="{{ asset('images/blog/post-1.jpg')}}" alt="amazing caves coverimage" class="img-fluid">
+						<img loading="lazy" src="{{ asset('front/images/blog/post-1.jpg')}}" alt="amazing caves coverimage" class="img-fluid">
 					</div>
 
 					<div class="content">
@@ -410,7 +423,7 @@ Start Blog Section
 			<article class="col-lg-4 col-md-6">
 				<div class="post-item">
 					<div class="media-wrapper">
-						<img loading="lazy" src="{{ asset('images/blog/post-2.jpg')}}" alt="amazing caves coverimage" class="img-fluid">
+						<img loading="lazy" src="{{ asset('front/images/blog/post-2.jpg')}}" alt="amazing caves coverimage" class="img-fluid">
 					</div>
 
 					<div class="content">
@@ -427,7 +440,7 @@ Start Blog Section
 			<article class="col-lg-4 col-md-6">
 				<div class="post-item">
 					<div class="media-wrapper">
-						<img loading="lazy" src="{{ asset('images/blog/post-3.jpg')}}" alt="amazing caves coverimage" class="img-fluid">
+						<img loading="lazy" src="{{ asset('front/images/blog/post-3.jpg')}}" alt="amazing caves coverimage" class="img-fluid">
 					</div>
 
 					<div class="content">

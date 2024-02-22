@@ -1,0 +1,51 @@
+{% extends 'basefront.html.twig' %}
+
+
+
+{% block body %}
+    <section class="service-2 section">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-6">
+                    <!-- section title -->
+                    <div class="title text-center">
+                        <h2>Notre Shop</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet, consectetur
+                            adipisicing elit. Voluptates, earum. </p>
+                        <div class="border"></div>
+                    </div>
+                    <!-- /section title -->
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="row text-center">
+
+                        {% for produit in list_produit %}
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <img src="{{ asset('images/produits/' ~ produit.getImage()) }}"  style=" width:150px" alt="Image du produit">
+                                <h4>{{ produit.getNomProduit() | upper }}</h4>
+                                {% if produit.getQuantite() == 1 %}
+                                <p style="color: red"> <b>Dernier article </b></p>
+                                {% else %}
+                                    <p style="color: green"> <b>En Stock </b></p>
+                                {% endif %}
+                                <p>Prix :  {{ produit.getPrix()  }} DT</p>
+                                <p>Categorie :  {{ produit.getIdCategorie().getNomCategorie() }}</p>
+
+                            </div>
+                        </div><!-- END COL -->
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div> <!-- End row -->
+        </div> <!-- End container -->
+    </section> <!-- End section -->
+
+
+{% endblock %}

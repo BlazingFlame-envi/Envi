@@ -29,6 +29,10 @@ class Taches
     #[ORM\Column(nullable: true)]
     private ?int $nbpart_t = null;
 
+    #[ORM\ManyToOne(inversedBy: 'taches')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Succes $succes = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +94,18 @@ class Taches
     public function setNbpartT(?int $nbpart_t): static
     {
         $this->nbpart_t = $nbpart_t;
+
+        return $this;
+    }
+
+    public function getSucces(): ?Succes
+    {
+        return $this->succes;
+    }
+
+    public function setSucces(?Succes $succes): static
+    {
+        $this->succes = $succes;
 
         return $this;
     }
