@@ -1,0 +1,45 @@
+{% extends 'basefront.html.twig' %}
+
+
+
+{% block image %}{% endblock %}
+
+
+
+
+{% block body %}
+<body id="body">
+
+
+<div class="hero-slider">
+        <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url('{{ asset('front/images/slider/envi.jpg') }}'); height: 100vh; ">
+
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        
+                            <div class="card-body">
+                                
+<h1 class="text-white"> create compte </h1>
+{{form_start(f,{'attr':{'novalidate':'novalidate', 'class': 'text-white','class': 'text-danger'}})}}
+{{form_label(f.nom_o,"Name", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.nom_o, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.nom_o, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.type_o,"Type", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.type_o, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.type_o, {'attr': {'class': 'form-control'}})}}
+
+<br>
+{{form_end(f)}}
+
+
+                            </div>
+                        </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

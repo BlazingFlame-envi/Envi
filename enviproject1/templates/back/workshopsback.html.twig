@@ -1,0 +1,72 @@
+{% extends 'homeback.html.twig' %}
+{% block body %}
+        <div class="content-body">
+            <div class="container-fluid mt-3">
+                <div class="row">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table class="table table-xs mb-0">
+                                            <thead>
+                                                <tr>
+        <th>ID</th>
+        <th>Name course</th>
+		<th>Name tutor</th>
+        <th>Date</th>
+        <th>Duration</th>
+        <th>Emplacement</th>
+        <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                              {% for workshop in workshops %}
+                                            <tbody>
+                                                <tr>
+                                                     <td>
+            {{ workshop.getId() }}
+        </td>
+        <td>
+            {{ workshop.getNomC() }}
+        </td>
+        <td>
+            {{ workshop.getNomTuteur() }}
+        </td>
+        <td>
+            {{ workshop.getDateC() | date('Y-m-d ') }}
+        </td>
+        <td>
+            {{ workshop.getDureeC() }}
+			        <td>
+
+			          {{  workshop.getEmplacement() }}
+						        </td>
+
+        </td>
+                                                  
+                                                   <td>
+                                                   <a href="{{ path('app_workback_fedit', {id: workshop.getId()}) }}"><i class="fa">&#x270E;</i></a>
+                                                   <a href="{{ path('app_workshopsback_delete', {id: workshop.getId()}) }}"><i class="fa">&#xf014;</i></a>
+                                                   </td>
+                                                   
+                                            </tbody>
+                                              {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+               
+
+                
+
+               
+            </div>
+            <!-- #/ container -->
+        </div>
+        </div>
+        {% endblock %}

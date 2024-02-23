@@ -1,0 +1,68 @@
+{% extends 'homeback.html.twig' %}
+
+{% block body %}
+
+
+     <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_back') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ path('app_back') }}">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+
+
+          
+
+            <div class="container-fluid">
+<div class="col-sm-6 col-md-4">
+{{form_start(f,{'attr':{'novalidate':'novalidate'}}) }}
+{{form_label(f.nom_c,"Name course", {'label_attr': {'class': 'text-white'}})}}
+{{form_row(f.nom_c, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.nom_c)}}
+    </div>
+
+<div class="col-sm-6 col-md-4">
+{{form_label(f.nom_tuteur,"Name tutor", {'label_attr': {'class': 'text-white'}})}}
+{{form_row(f.nom_tuteur, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.nom_tuteur)}}
+ </div>
+ <br>
+<div class="col-sm-6 col-md-4">
+{{form_label(f.date_c,"Date", {'label_attr': {'class': 'text-white'}})}}
+{{form_row(f.date_c, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.date_c)}}
+ </div>
+<br>
+<div class="col-sm-6 col-md-4">
+{{form_label(f.duree_c,"Duration", {'label_attr': {'class': 'text-white'}})}}
+{{form_row(f.duree_c, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.duree_c)}}
+ </div>
+<br>
+<div class="col-sm-6 col-md-4">
+{{form_label(f.emplacement,"Emplacement", {'label_attr': {'class': 'text-white'}})}}
+{{form_row(f.emplacement, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(f.emplacement)}}
+</div>
+<br>
+<div  class="text-center">
+    <button type="submit" class="btn btn-success btn-lg">create</button>
+</div>
+
+
+
+<br>
+{{form_end(f)}}
+
+            </div>
+            <!-- #/ container -->
+            
+        
+
+</div>
+{% endblock %}
