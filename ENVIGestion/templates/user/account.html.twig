@@ -1,0 +1,50 @@
+{% extends 'basefront.html.twig' %}
+{% block image %}
+{% endblock %}
+{% block body %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <body id="body">
+        <div class="hero-slider">
+            <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});" style="height: 100vh;">
+                <div class="container">
+                    <div class="row">
+                     <div class="col-md-6">
+                            <div class="card-body">
+                             <i class="fas fa-user fa-5x mr-3"></i>
+                                <h1 class="text-white">Détails du Compte</h1>
+                                <p class="text-white">Nom: {{ app.user.getNom() }}</p>
+                                <p class="text-white">Prénom: {{ app.user.getPrenom() }}</p>
+                                <p class="text-white">Email: {{ app.user.getMail() }}</p>
+                                <p class="text-white">Date de naissance: {{ app.user.getDN()|date('Y-m-d') }}</p>
+                                <!-- Ajoutez d'autres détails de l'utilisateur ici selon vos besoins -->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h1 class="text-white">Modifier Compte</h1>
+                                {{ form_start(form, {attr: { novalidate: 'novalidate'}}) }}
+                                    {{ form_label(form.nom, 'Name', {'label_attr': {'class': 'text-white'}}) }}
+                                    {{ form_errors(form.nom, {'attr': {'class': 'text-danger'}}) }}
+                                    {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                                    <br>
+                                    {{ form_label(form.prenom, 'Lastname', {'label_attr': {'class': 'text-white'}}) }}
+                                    {{ form_errors(form.prenom, {'attr': {'class': 'text-danger'}}) }}
+                                    {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                                    <br>
+                                    {{ form_label(form.mail, 'Email', {'label_attr': {'class': 'text-white'}}) }}
+                                    {{ form_errors(form.mail, {'attr': {'class': 'text-danger'}}) }}
+                                    {{ form_widget(form.mail, {'attr': {'class': 'form-control'}}) }}
+                                    <br>
+                                    {{ form_label(form.DN, 'Date of birth', {'label_attr': {'class': 'text-white'}}) }}
+                                    {{ form_errors(form.DN, {'attr': {'class': 'text-danger'}}) }}
+                                    {{ form_widget(form.DN, {'attr': {'class': 'form-control'}}) }}
+                                    <br>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+{% endblock %}

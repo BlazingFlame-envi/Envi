@@ -1,0 +1,47 @@
+{% extends 'basefront.html.twig' %}
+{% block image %}
+{% endblock %}
+{% block body %}
+    <body id="body">
+
+    <div class="hero-slider">
+        <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url({{ asset('front/images/slider/envi.jpg')}}); height: 100vh;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h1 class="text-white">Modify Compte</h1>
+                            {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'text-white text-danger'}}) }}
+                            
+                            {{ form_label(form.nom, "Name", {'label_attr': {'class': 'text-white'}}) }}
+                            {{ form_errors(form.nom, {'attr': {'class': 'text-danger'}}) }}
+                            {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+                            <br>
+                            
+                            {{ form_label(form.prenom, "Lastname", {'label_attr': {'class': 'text-white'}}) }}
+                            {{ form_errors(form.prenom, {'attr': {'class': 'text-danger'}}) }}
+                            {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+                            <br>
+                            
+                            {{ form_label(form.mail, "Email", {'label_attr': {'class': 'text-white'}}) }}
+                            {{ form_errors(form.mail, {'attr': {'class': 'text-danger'}}) }}
+                            {{ form_widget(form.mail, {'attr': {'class': 'form-control'}}) }}
+                            <br>
+                            
+                            {{ form_label(form.DN, "Date of birth", {'label_attr': {'class': 'text-white'}}) }}
+                            {{ form_errors(form.DN, {'attr': {'class': 'text-danger'}}) }}
+                            {{ form_widget(form.DN, {'attr': {'class': 'form-control'}}) }}
+                            <br>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-lg">modify</button>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'baseback.html.twig' %}
+{% block body %}
+     <script src="{{ asset( 'assetsback/js/jquery.js') }}"></script>
+        <div class="content-body">
+            <div class="container-fluid mt-3">
+                <div class="row">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">           
+                           
+                                    <div class="input-group mb-3">
+                                    <span class="input-group-text bg-transparent border-0" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+    <input type="search" class="form-control" placeholder="Chercher" id="search">
+    
+</div>
+                                        <table class="table table-xs mb-0" id="tableac">
+                                            
+                                            <thead>
+                                        
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Lastname</th>
+                                                    <th>Role</th>
+                                                    <th>Email</th>
+                                                    <th>Date of birth</th>
+                                                    <th>Statut</th>
+                                                    <th>Access</th>
+                                                     <th>Delete</th>
+                                                </tr>
+                                            </thead>
+                                              {% for author in authors %}
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ author.getId() }}</td>
+                                                    <td>{{ author.getNom() | upper }}</td>
+                                                    <td>
+                                                        <span>{{ author.getPrenom() }}</span>
+                                                    </td>
+                                                    <td>
+                                                       {{ author.getRole() }}
+                                                    </td>
+                                                    <td> {{ author.getMail() }}</td>
+                                                    <td>
+                                                        {{ author.getDN() }}
+                                                    </td>
+                                                       <td>
+                                                        {{ author.getStatus() }}
+                                                    </td>
+                                                    <td>
+                {% if author.getStatus() == 'active' %}
+                    <a href="{{ path('user_inactive', {'id': author.getId()}) }}"><i class="fa">&#xf00d;</i></a>
+                {% elseif author.getStatus() == 'inactive' %}
+                    <a href="{{ path('user_active', {'id': author.getId()}) }}"><i class="fa">&#xf00c;</i></a>
+                {% endif %}
+            </td>   
+                                                     <td>
+                                                   <a href="{{ path('app_user_back_delete', {'id': author.getId()}) }}" ><i class="fa">&#xf014;</i></a>
+                                                   </td>
+                                            </tbody>
+                                              {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+      <script>
+        $(document).ready(function(){
+            $('#search').keyup(function(){
+                search_table($(this).val());
+            });
+            function search_table(value){
+                $('#tableac tbody tr').each(function(){
+                    var found = false;
+                    $(this).find('td:nth-child(2), td:nth-child(3)').each(function(){ 
+                        if($(this).text().toLowerCase().includes(value.toLowerCase())){
+                            found = true;
+                            return false; 
+                        }
+                    });
+                    if(found){
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+        });
+    </script>
+        {% endblock %}
+       
