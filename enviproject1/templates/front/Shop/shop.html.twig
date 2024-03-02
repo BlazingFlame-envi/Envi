@@ -11,8 +11,13 @@
                     <!-- section title -->
                     <div class="title text-center">
                         <h2>Notre Shop</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet, consectetur
-                            adipisicing elit. Voluptates, earum. </p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet,
+                            consectetur
+                            adipisicing elit. Voluptates, earum.
+                        </p>
+                        <div class="alert alert-success" role="alert" id="toast-succes" style="display: none">
+                            Le produit a été ajouté avec succes
+                        </div>
                         <div class="border"></div>
                     </div>
                     <!-- /section title -->
@@ -24,20 +29,37 @@
                     <div class="row text-center">
 
                         {% for produit in list_produit %}
-                        <div class="col-md-4 col-sm-4">
-                            <div class="service-item">
-                                <img src="{{ asset('images/produits/' ~ produit.getImage()) }}"  style=" width:150px" alt="Image du produit">
-                                <h4>{{ produit.getNomProduit() | upper }}</h4>
-                                {% if produit.getQuantite() == 1 %}
-                                <p style="color: red"> <b>Dernier article </b></p>
-                                {% else %}
-                                    <p style="color: green"> <b>En Stock </b></p>
-                                {% endif %}
-                                <p>Prix :  {{ produit.getPrix()  }} DT</p>
-                                <p>Categorie :  {{ produit.getIdCategorie().getNomCategorie() }}</p>
-
-                            </div>
-                        </div><!-- END COL -->
+                            <div class="col-md-4 col-sm-4">
+                                <div class="service-item">
+                                    <img src="{{ asset('images/produits/' ~ produit.getImage()) }}" style=" width:150px"
+                                         alt="Image du produit">
+                                    <h4>{{ produit.getNomProduit() | upper }}</h4>
+                                    {% if produit.getQuantite() == 1 %}
+                                        <p style="color: red"><b>Dernier article </b></p>
+                                    {% elseif produit.getQuantite() == 0 %}
+                                        <p style="color: orange"><b>En rupture de stock </b></p>
+                                    {% else %}
+                                        <p style="color: green"><b>En Stock </b></p>
+                                    {% endif %}
+                                    <p>Prix : {{ produit.getPrix() }} DT</p>
+                                    <p>Categorie : {{ produit.getIdCategorie().getNomCategorie() }}</p>
+                                    {% if app.user %}
+                                        {% if   produit.getQuantite() > 0 %}
+                                            <p>
+                                                <button class="btn btn-success"
+                                                        onclick="ajouterProduit({{ produit.getId() }} , {{ app.user.id }})">
+                                                    ajouter au panier
+                                                </button>
+                                            </p>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if   produit.getQuantite() > 0 %}
+                                            <p><a href="{{ path('app_login') }}">
+                                                    <button class="btn btn-success"> ajouter au panier</button></p></a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div><!-- END COL -->
                         {% endfor %}
 
 
@@ -48,4 +70,29 @@
     </section> <!-- End section -->
 
 
+
+{% endblock %}
+{% block javascript %}
+<script>
+    function ajouterProduit(id_produit , id_user) {
+    var baseUrl = "{{ path('ajouter_panier', {'id_produit': 'ID_PRODUIT_PLACEHOLDER', 'id_user': 'ID_USER_PLACEHOLDER'}) }}";
+    var finalUrl = baseUrl.replace('ID_PRODUIT_PLACEHOLDER', id_produit).replace('ID_USER_PLACEHOLDER', id_user);
+
+    $.ajax({
+        url: finalUrl,
+        type: 'GET',
+        success: function (data) {
+            const toast = document.getElementById('toast-succes');
+            toast.style = 'display: block';
+            setTimeout(()=> {
+                toast.style = 'display: none';
+            },3000)
+
+        },
+        error: function (xhr, status, error) {
+
+        }
+    })
+}
+</script>
 {% endblock %}

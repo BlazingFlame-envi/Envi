@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\Positive;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class FormProduit extends AbstractType
 {
@@ -26,7 +27,7 @@ class FormProduit extends AbstractType
             ])
             ->add('quantite', NumberType::class, [
                 'constraints' => [
-                    new Positive(['message' => 'la quantité doit être positive.']),
+                    new GreaterThanOrEqual([ 'value' => 0,'message' => 'la quantité doit être positive.']),
                 ],
             ])
             ->add('id_categorie', EntityType::class, [

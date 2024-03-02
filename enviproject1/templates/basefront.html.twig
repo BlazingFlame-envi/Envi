@@ -81,8 +81,10 @@
               Account <i class="tf-ion-chevron-down"></i>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown02">
+				{% if app.user %}
               <li><a class="dropdown-item" href="{{ path('app_user_fedit', {id: app.user.id}) }}">Account settings</a></li>
-              <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
+				{% endif %}
+				<li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
 									
             </ul>
           </li>
@@ -563,5 +565,9 @@ Start Blog Section
 <!-- Custom js -->
 <script src="{{ asset('front/js/script.js')}}"></script>
 </html>
-{% endblock %} 
+{% endblock %}
 
+
+{% block javascript %}
+
+{% endblock %}
