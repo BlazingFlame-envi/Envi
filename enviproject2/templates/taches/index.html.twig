@@ -1,0 +1,203 @@
+{% extends 'basefront.html.twig' %}
+
+{% block body %}
+{% for flashMessage in app.flashes('success') %}
+    <!-- Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Félicitations!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" role="alert">
+                        {{ flashMessage }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+    <section class="service-2 section">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-6">
+                    <!-- section title -->
+                    <div class="title text-center">
+                        <h2>Les Taches</h2>
+                        <br>
+                        <input type="text" id="search" placeholder="Rechercher par nom..." class="form-control">
+                        <div class="border"></div>
+                        <div class="col-md-12 title text-center">
+                        <p><a href="{{ path('app_taches_favorites') }}" class="btn btn-success">Favoris</a> </p>
+                        </div>
+                    </div>
+                    <!-- /section title -->
+                </div>
+            </div>
+            <div class="row" id="partner-list">
+
+                <div class="col-md-12">
+                    <div class="row text-center">
+                        {% for tache in taches %}
+                        <div class="col-md-4 col-sm-4 partner-item">
+                            <div class="service-item">
+                                
+                                <h4>{{ tache.nomT | upper }}</h4>
+                                <p>Type :  {{ tache.typeT }} </p>
+                                <p>Nombre de Participants :  {{ tache.nbpartT }} </p>
+                                <p>Emplacement :  {{ tache.emplT  }}</p> 
+                                <p>Date :  {{ tache.dateT ? tache.dateT|date('Y-m-d') : '' }}</p>
+                                <p>Succes :  {{ tache.succes }} </p>
+                                {% if tache.favoris %}
+                                <button class="btn btn-warning unfavorite-btn" data-tache="{{ tache.id }}">Retirer des favoris</button>
+                                {% else %}
+                                <button class="btn btn-primary favorite-btn" data-tache="{{ tache.id }}">Ajouter aux favoris</button>
+                                {% endif %}
+                                <br>
+                               <p>  <a href="{{ path('app_taches_delete',{'id': tache.id}) }}"><i class="fa">&#xf014;</i>Delete</a> </p>
+                               <p><a href="{{ path('app_taches_edit', {'id': tache.id}) }}"class="btn btn-success">Edit</a></p>
+
+                            </div>
+                        </div><!-- END COL -->
+                        {% endfor %}
+                    </div>
+                    
+    
+
+
+
+                </div>
+                <div class="col-md-12 title text-center">
+                <p><a href="{{ path('app_taches_new') }}" class="btn btn-success">Ajouter Tache</a> </p>
+                </div>
+            </div> <!-- End row -->
+                
+            <!-- Pagination Container -->
+            <div class="row">
+                <div class="col-md-12 text-center" id="pagination-container">
+                    <!-- Pagination links will be dynamically added here -->
+                </div>
+            </div> <!-- End Pagination -->
+        </div> <!-- End container -->
+    </section> <!-- End section -->
+    
+
+    <!-- JavaScript for Pagination -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemsPerPage = 3; // Change this value as needed
+            const partners = document.querySelectorAll('.partner-item');
+            const numPages = Math.ceil(partners.length / itemsPerPage);
+
+            function paginate(page) {
+                partners.forEach((partner, index) => {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        partner.style.display = 'block';
+                    } else {
+                        partner.style.display = 'none';
+                    }
+                });
+            }
+
+            function createPaginationLinks() {
+                const paginationContainer = document.getElementById('pagination-container');
+                for (let i = 1; i <= numPages; i++) {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = i;
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        paginate(i);
+                    });
+                    paginationContainer.appendChild(link);
+                    paginationContainer.appendChild(document.createTextNode(' '));
+                }
+            }
+
+            createPaginationLinks();
+            paginate(1); // Show the first page initially
+        });
+    </script>
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#search').keyup(function(){
+                searchItems($(this).val());
+            });
+        });
+
+        function searchItems(value){
+            $('.partner-item').each(function(){
+                var found = false;
+                $(this).find('h4').each(function(){
+                    if($(this).text().toLowerCase().includes(value.toLowerCase())){
+                        found = true;
+                        return false;
+                    }
+                });
+                if(found || value === ''){
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    </script>
+    <script>
+    // Afficher le modal dès que la page est chargée
+    $(document).ready(function() {
+        $('#successModal').modal('show');
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.favorite-btn').click(function() {
+        var tacheId = $(this).data('tache');
+        var button = $(this);
+        
+        $.post('/marquer-favoris/' + tacheId, function(response) {
+            if (response.success) {
+                // Mettre à jour la vue si l'action a réussi
+                button.text('Retirer des favoris');
+                button.removeClass('btn-primary').addClass('btn-warning');
+                button.removeClass('favorite-btn').addClass('unfavorite-btn');
+                
+                // Autres mises à jour de la vue si nécessaire
+            } else {
+                // Gérer les erreurs si nécessaire
+            }
+        });
+    });
+
+    $('.unfavorite-btn').click(function() {
+        var tacheId = $(this).data('tache');
+        var button = $(this);
+        
+        $.post('/retirer-favoris/' + tacheId, function(response) {
+            if (response.success) {
+                // Mettre à jour la vue si l'action a réussi
+                button.text('Ajouter aux favoris');
+                button.removeClass('btn-warning').addClass('btn-primary');
+                button.removeClass('unfavorite-btn').addClass('favorite-btn');
+                location.reload();
+                // Autres mises à jour de la vue si nécessaire
+            } else {
+                // Gérer les erreurs si nécessaire
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

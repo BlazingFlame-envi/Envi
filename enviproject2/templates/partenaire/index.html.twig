@@ -1,0 +1,174 @@
+{% extends 'basefront.html.twig' %}
+
+
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<style>
+    /* Style pour la table */
+    .blue-border-table {
+        border-collapse: collapse; /* Fusionner les bordures */
+    }
+
+    /* Style pour les cellules de la table */
+    .blue-border-table th,
+    .blue-border-table td {
+        border: 2px solid blue; /* Bordure de 2px en bleu */
+        padding: 8px; /* Ajouter un espacement autour du contenu */
+        font-weight: bold; /* Texte en gras */
+    }
+
+    /* Style pour l'en-tête de la table */
+    .blue-border-table th {
+        background-color: blue; /* Fond bleu pour les en-têtes */
+        color: white; /* Texte en blanc pour un meilleur contraste */
+    }
+</style>
+
+<div class="example-wrapper">
+<section class="portfolio section-sm" id="portfolio">
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-xl-6 col-lg-8">
+				<!-- section title -->
+				<div class="title text-center">
+					<h2>Our Works</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro, veritatis. Lorem ipsum dolor sit amet,
+						consectetur adipisicing elit. Minima, vitae? </p>
+					<div class="border"></div>
+				</div>
+				<!-- /section title -->
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+
+				<div class="portfolio-filter">
+					<button type="button" data-filter="all">All</button>
+					<button type="button" data-filter="photography">Photography</button>
+					<button type="button" data-filter="ios">IOS App</button>
+					<button type="button" data-filter="development">Development</button>
+					<button type="button" data-filter="design">Design</button>
+				</div>
+				
+{% for partenaire in partenaires %}
+				<div class="row">
+					<div class="col-12">
+						<table class="blue-border-table ">
+						<td>
+							<div class="col-md-3 col-sm-6 col-xs-6 filtr-item " data-category="mix, design">
+								<div>
+								<h4><a href="#" style="color: black;">{{ partenaire.getId() }}</a></h4>
+								</td>
+								<br>
+								<td>
+									<h4><a href="#" style="color: black;">{{ partenaire.getNomE() | upper ~ ' / ' ~ partenaire.getMailE() }}</a></h4>
+								</td>
+								<br>
+								<td>
+								<a href="{{ path('app_partenaire_delete', {id: partenaire.getId()}) }}" class="btn btn-danger">Delete</a>
+								</td>
+								<br>
+								<br>
+								<td>
+								<a href="{{ path('app_part_fedit', {id: partenaire.getId()}) }}" class="btn btn-primary btn-lg">Edit</a>
+								</td>
+								<br>
+								<br>
+								</div>
+							</div>
+							</table>
+							
+					{% endfor %}
+						
+						
+					
+					
+						
+						</div>
+					</div>
+				</div>
+			</div> <!-- /end col-lg-12 -->
+		</div> <!-- end row -->
+	
+</section> <!-- End section -->
+<!-- Start Testimonial
+=========================================== -->
+		
+	<section class="testimonial section" id="testimonial">
+		<div class="container">
+			<div class="row">				
+				<div class="col-lg-12">
+					<!-- testimonial wrapper -->
+					<div class="testimonial-slider">
+						<!-- testimonial single -->
+						<div class="item text-center">
+							<i class="tf-ion-chatbubbles"></i>
+							<!-- client info -->
+							<div class="client-details">
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum nulla, soluta dolorum. Eos earum, magni asperiores, unde corporis labore, enim, voluptatum officiis voluptates alias natus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, officia. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, quia?</p>
+							</div>
+							<!-- /client info -->
+							<!-- client photo -->
+							<div class="client-thumb">
+								<img loading="lazy" src="assetsfront/images/client-logo/clients-1.jpg" class="img-fluid" alt="">
+							</div>
+							<div class="client-meta">
+								<h3>William Martin</h3>
+								<span>CEO , Company Name</span>
+							</div>
+							<!-- /client photo -->
+						</div>
+						<!-- /testimonial single -->
+				
+						<!-- testimonial single -->
+						<div class="item text-center">
+							<i class="tf-ion-chatbubbles"></i>
+							<!-- client info -->
+							<div class="client-details">
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum nulla, soluta dolorum. Eos earum, magni asperiores, unde corporis labore, enim, voluptatum officiis voluptates alias natus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, officia. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, quia?</p>
+							</div>
+							<!-- /client info -->
+							<!-- client photo -->
+							<div class="client-thumb">
+								<img loading="lazy" src="assetsfront/images/client-logo/clients-2.jpg" class="img-fluid" alt="">
+							</div>
+							<div class="client-meta">
+								<h3>Emma Harrison</h3>
+								<span>CEO , Company Name</span>
+							</div>
+							<!-- /client photo -->
+						</div>
+						<!-- /testimonial single -->
+					
+						<!-- testimonial single -->
+						<div class="item text-center">
+							<i class="tf-ion-chatbubbles"></i>
+							<!-- client info -->
+							<div class="client-details">
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum nulla, soluta dolorum. Eos earum, magni asperiores, unde corporis labore, enim, voluptatum officiis voluptates alias natus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, officia. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, quia?</p>
+							</div>
+							<!-- /client info -->
+							<!-- client photo -->
+							<div class="client-thumb">
+								<img loading="lazy" src="assetsfront/images/client-logo/clients-3.jpg" class="img-fluid" alt="">
+							</div>
+							<div class="client-meta">
+								<h3>Alexander Lucas</h3>
+								<span>CEO , Company Name</span>
+							</div>
+							<!-- /client photo -->
+						</div>
+						<!-- /testimonial single -->
+					</div>
+				</div> 		<!-- end col lg 12 -->
+			</div>	    <!-- End row -->
+		</div>       <!-- End container -->
+	</section>    <!-- End Section -->
+    </ul>
+</div>
+{% endblock %}

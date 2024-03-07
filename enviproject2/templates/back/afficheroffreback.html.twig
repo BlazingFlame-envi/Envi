@@ -1,0 +1,82 @@
+{% extends 'back/homeback.html.twig' %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<style>
+    /* Style pour la table */
+    .blue-border-table {
+        border-collapse: collapse; /* Fusionner les bordures */
+    }
+
+    /* Style pour les cellules de la table */
+    .blue-border-table th,
+    .blue-border-table td {
+        border: 2px solid blue; /* Bordure de 2px en bleu */
+        padding: 8px; /* Ajouter un espacement autour du contenu */
+        font-weight: bold; /* Texte en gras */
+    }
+
+    /* Style pour l'en-tête de la table */
+    .blue-border-table th {
+        background-color: blue; /* Fond bleu pour les en-têtes */
+        color: white; /* Texte en blanc pour un meilleur contraste */
+    }
+</style>
+
+     <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_back') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ path('app_back') }}">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+{% for partenaire in offres %}
+
+            <div class="container-fluid">
+<table class="blue-border-table ">
+						<td>
+							<div class="col-md-3 col-sm-6 col-xs-6 filtr-item " data-category="mix, design">
+								<div>
+								<h4><a href="#" style="color: black;">{{ partenaire.getId() }}</a></h4>
+								</td>
+								<br>
+								<td>
+									<h4><a href="#" style="color: black;">{{ partenaire.getNomO() }}</a></h4>
+								</td>
+								<br>
+                                <td>
+									<h4><a href="#" style="color: black;">{{ partenaire.getTypeO() }}</a></h4>
+								</td>
+                                <br>
+                                 <td>
+									<h4><a href="#" style="color: black;">{{ partenaire.entreprise.getNomE() }}</a></h4>
+								</td>
+                                <br>
+								<td>
+								<a href="{{ path('app_offreback_delete', {id: partenaire.getId()}) }}" class="btn btn-danger">Delete</a>
+								</td>
+								<br>
+								<br>
+								<td>
+								<a href="{{ path('app_offreback_fedit', {id: partenaire.getId()}) }}" class="btn btn-primary btn-lg">Edit</a>
+								</td>
+								<br>
+								<br>
+								</div>
+							</div>
+							</table>
+
+            </div>
+            <!-- #/ container -->
+            
+        
+{% endfor %}
+</div>
+{% endblock %}

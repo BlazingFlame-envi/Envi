@@ -1,0 +1,64 @@
+{% extends 'back/homeback.html.twig' %}
+
+{% block body %}
+
+
+     <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_succes_back') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ path('app_succes_back') }}">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+
+
+          
+
+            <div class="container-fluid">
+{{form_start(form,{'attr':{'novalidate':'novalidate', 'class': 'text-black','class': 'text-danger'}})}}
+{{form_label(form.nom_t,"Name", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.nom_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.nom_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.type_t,"Type", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.type_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.type_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.empl_t,"Emplacement", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.empl_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.empl_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.date_t,"Date", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.date_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.date_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.nbpart_t,"Nombre de participants", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.nbpart_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.nbpart_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.succes,"Succes", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.succes, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.succes, {'attr': {'class': 'form-control'}})}}
+<br>
+
+<div  class="text-center">
+    <button href="{{ path('app_taches_index') }}" type="submit" class="btn btn-success btn-lg">Modify</button>
+</div>
+
+
+
+
+<br>
+{{form_end(form)}}
+
+            </div>
+            <!-- #/ container -->
+            
+        
+
+</div>
+{% endblock %}
