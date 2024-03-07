@@ -1,0 +1,58 @@
+{% extends 'basefront.html.twig' %}
+
+
+
+
+{% block image %}{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block body %}
+<body id="body">
+
+
+<div class="hero-slider">
+        <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});" style="height: 100vh;">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        
+                            <div class="card-body">
+                                
+<h1 class="text-white"> Ajouter Entreprise </h1>
+{{form_start(f,{'attr':{'novalidate':'novalidate', 'class': 'text-white','class': 'text-danger'}})}}
+{{form_label(f.nom_e,"Name", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.nom_e, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.nom_e, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.emplacement,"Emplacement", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.emplacement, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.emplacement, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.tel,"Telephone", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.tel, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.tel, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.mail_e,"Email", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.mail_e, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.mail_e, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_end(f)}}
+
+
+                            </div>
+                        </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
