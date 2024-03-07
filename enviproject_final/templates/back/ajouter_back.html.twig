@@ -1,0 +1,62 @@
+{% extends 'baseback.html.twig' %}
+
+{% block body %}
+
+
+     <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_back') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ path('app_back') }}">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+
+
+          
+
+            <div class="container-fluid">
+<div class="col-sm-6 col-md-4">
+{{form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+{{form_row(form.nom_eq, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(form.nom_eq)}}
+    </div>
+
+<div class="col-sm-6 col-md-4">
+{{form_row(form.type_eq, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(form.type_eq)}}
+ </div>
+<br>
+<div class="col-sm-6 col-md-4">
+{{form_row(form.disponibilite_eq, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(form.disponibilite_eq)}}
+ </div>
+<br>
+<div class="col-sm-6 col-md-4">
+{{form_row(form.quantite_eq, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(form.quantite_eq)}}
+</div>
+<br>
+
+<div class="col-sm-6 col-md-4">
+{{form_row(form.prix_eq, {'attr': {'class': 'form-control mb-3'}}) }}
+{{form_errors(form.prix_eq)}}
+</div>
+<br>
+
+<div  class="text-center">
+    <button type="submit" class="btn btn-success btn-lg">Ajouter</button>
+</div>
+<br>
+{{form_end(form)}}
+
+            </div>
+            <!-- #/ container -->
+            
+        
+
+</div>
+{% endblock %}

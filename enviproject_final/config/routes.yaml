@@ -1,0 +1,12 @@
+# config/routes/annotations.yaml
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+
+
+
+# config/routes.yaml
+app_qr_codes:
+    path: '/qr-codes'
+    controller: App\Controller\EquipementController::qr
+    methods: GET

@@ -1,0 +1,118 @@
+{% extends 'basefront.html.twig' %}
+{% block title %}Equipment Details{% endblock %}
+{% block body %}
+
+
+
+
+<section class="equipment section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="title text-center">
+                        <h2>Nos Equipement</h2>
+                        <p><a href="{{ path('app_equipement_fnew') }}" class="btn btn-success">Ajouter equipment</a> </p>
+                        <br>
+                                                   <a href="{{ path('app_equipement_tri') }}" class="btn btn-success"> Equipment Ordered </a>
+                        <br>
+                             <input type="text" id="search" placeholder="Search by name..." class="form-control">
+                        <div class="border"></div>
+                    </div>
+            </div>
+        </div>
+        <div class="row" id="equipment-list">
+            <div class="col-md-12">
+                <div class="row text-center">
+                    {% for author in authors %}
+                    <div class="col-md-4 col-sm-4 equipment-item">
+                        <div class="service-item">
+                            <!-- Assuming you have an image for each equipment, replace 'placeholder-image.png' with the actual image path variable -->
+                            <img src="{{ asset('front/images/slider/marteau.jpg') }}"  style="width:150px" alt="Equipment Image">
+                            <h4>{{ author.getNomEq() | upper }}</h4>
+                            <p>Type: {{ author.getTypeEq() }}</p>
+                            <p>Disponibilité: {{ author.getDisponibiliteEq() }}</p>
+                            <p>Quantité: {{ author.getQuantiteEq() }}</p>
+                            <p>Prix: {{ author.getPrixEq() }} €</p>
+                            <p>
+                                <a href="{{ path('app_equipement_fedit', {id: author.id}) }}" class="btn btn-primary">Edit</a>
+                                <a href="{{ path('app_equipement_delete', {id: author.id}) }}" class="btn btn-danger">Delete</a>
+                            </p>
+                        </div>
+                    </div><!-- END COL -->
+                    {% else %}
+                        <p>No equipment details available.</p>
+                    {% endfor %}
+                </div>  
+    
+            </div>
+        </div> <!-- End row -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+<button id="downloadPdfButton" class="btn btn-info">Download PDF</button>
+
+    </div> <!-- End container -->
+</section> <!-- End section -->
+ 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('search').addEventListener('keyup', function() {
+        var searchValue = this.value.toLowerCase();
+        var items = document.querySelectorAll('.equipment-item'); // Correct class name to match your items
+
+        items.forEach(function(item) {
+            // Directly access the text content of the <h4> tag
+            var name = item.querySelector('h4').textContent.toLowerCase();
+            if (name.includes(searchValue) || searchValue === '') {
+                item.style.display = ''; // Show the item
+            } else {
+                item.style.display = 'none'; // Hide the item
+            }
+        });
+    });
+});
+</script>
+<!-- pdf -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('downloadPdfButton').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        var pdf = new jsPDF('p', 'mm', 'a4');
+          pdf.setFontSize(22);
+        pdf.text('Equipements Liste', 105, 20, null, null, 'center'); // Center title at the top
+        const positions = [
+            {x: 10, y: 30}, {x: 110, y: 30}, // First row
+            {x: 10, y: 140}, {x: 110, y: 140} // Second row
+        ];
+        var equipmentItems = document.querySelectorAll('.equipment-item');
+        var itemCount = equipmentItems.length;
+        var countProcessed = 0;
+        var margin = 10; // Margin for PDF layout
+        var yPosition = 10; // Initial Y position in PDF
+
+        equipmentItems.forEach(function(item, index) {
+            html2canvas(item).then(canvas => {
+                var imgData = canvas.toDataURL('image/png');
+                if (index > 0 && index % 3 === 0) { // Example: New page every 3 items
+                    pdf.addPage();
+                    yPosition = 10; // Reset Y position for new page
+                }
+                pdf.addImage(imgData, 'PNG', margin, yPosition, 60, 60); // Adjust dimensions as needed
+                yPosition += 70; // Adjust based on the height of your elements + margin
+                
+                countProcessed++;
+                if (countProcessed === itemCount) {
+                    pdf.save('equipment-cards.pdf');
+                }
+            });
+        });
+    });
+});
+</script>
+
+
+
+
+
+
+{% endblock %}
