@@ -1,0 +1,67 @@
+{% extends '/homeback.html.twig' %}
+
+{% block body %}
+<style>
+    li {
+        color: red;
+    }
+</style>
+
+    <div class="content-body">
+
+        <div class="row page-titles mx-0">
+            <div class="col p-md-0">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ path('app_back') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active"><a href="{{ path('app_back') }}">Home</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+
+
+        <div class="container-fluid">
+            <div class="col-sm-6 col-md-4">
+                {{ form_start(form) }}
+                {{ form_row(form.nom_produit, {'attr': {'class': 'form-control mb-3'}, 'required': false}) }}
+
+            </div>
+
+            <div class="col-sm-6 col-md-4">
+                {{ form_row(form.prix, {'attr': {'class': 'form-control mb-3'}, 'required': false}) }}
+
+            </div>
+            <br>
+            <div class="col-sm-6 col-md-4">
+                {{ form_row(form.quantite, {'attr': {'class': 'form-control mb-3'}, 'required': false}) }}
+
+            </div>
+            <br>
+            <div class="col-sm-6 col-md-4">
+                {{ form_row(form.id_categorie, {'attr': {'class': 'form-control mb-3'}, 'required': false}) }}
+                {{ form_errors(form.id_categorie) }}
+            </div>
+            <br>
+            <div class="col-sm-6 col-md-4">
+                {{ form_row(form.imageFile, {'attr': {'class': 'form-control mb-3'}}) }}
+
+            </div>
+            <br>
+
+            <div class="row">
+                <span style="margin-left: 30px">  {{ form_row(form.submit) }}</span>
+                {{ form_end(form) }}
+                <span style="margin-left: 30px" onclick="window.location.href='{{ path('list_produit') }}';">
+
+                    <button class="btn btn-primary btn-lg" > Annuler
+                    </button> </span>
+
+
+            </div>
+
+        </div>
+        <!-- #/ container -->
+
+
+    </div>
+{% endblock %}

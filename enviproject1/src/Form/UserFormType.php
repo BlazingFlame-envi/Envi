@@ -9,6 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 class UserFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -21,11 +23,16 @@ class UserFormType extends AbstractType
                     'benevole' => 'benevole',
                     'agence' => 'agence',
                     'employé' => 'employé',
+                 
+                  
                 ],
             ])
             ->add('mail')
             ->add('motdepasse',PasswordType::class)
             ->add('DN')
+            ->add('num_tel')
+            ->add('recaptcha',RecaptchaType::class)
+           
         ;
     }
 
@@ -35,4 +42,5 @@ class UserFormType extends AbstractType
             'data_class' => User::class,
         ]);
     }
+    
 }

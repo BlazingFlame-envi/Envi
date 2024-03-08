@@ -2,3 +2,8 @@
 controllers:
     resource: ../src/Controller/
     type: annotation
+
+app_taches_favorites:
+    path: '/taches/favorites'
+    controller: 'App\Controller\TachesController::favorites'
+    methods: ['GET']

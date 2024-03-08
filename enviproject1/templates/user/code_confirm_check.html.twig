@@ -1,0 +1,39 @@
+{% extends 'basefront.html.twig' %}
+
+{% block header %}
+{% endblock %}
+
+{% block image %}
+{% endblock %}
+
+{% block body %}
+{% for message in app.flashes('error') %}
+
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+
+    {% endfor %}
+<body id="body">
+    <div class="hero-slider">
+        <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});" style="height: 100vh;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <h1 class="text-white">  Forgot Password </h1>
+                            <div class="form-container">
+                                {{ form_start(form,{'attr':{'novalidate':'novalidate', 'class': 'text-white','class': 'text-danger'}}) }}
+                                {{ form_label(form.code,"Code", {'label_attr': {'class': 'text-white'}}) }}
+                                {{ form_errors(form.code, {'attr': {'class': 'text-danger'}}) }}
+                                {{ form_widget(form.code, {'attr': {'class': 'form-control'}}) }}
+                                <br>
+                                {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

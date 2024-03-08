@@ -1,0 +1,119 @@
+{% extends 'basefront.html.twig' %}
+
+{% block body %}
+    <section class="service-2 section">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-6">
+                    <!-- section title -->
+                    <div class="title text-center">
+                        <h2>Our Partners</h2>
+                    
+                        <p><a href="{{ path('app_partenaire_fnew') }}" class="btn btn-success">Add Partners</a> </p>
+                     
+                        <br>
+                        <input type="text" id="search" placeholder="Rechercher par nom..." class="form-control">
+                        <div class="border"></div>
+                    </div>
+                    <!-- /section title -->
+                </div>
+            </div>
+            <div class="row" id="partner-list">
+
+                <div class="col-md-12">
+                    <div class="row text-center">
+                        {% for partenaire in partenaires %}
+                        <div class="col-md-4 col-sm-4 partner-item">
+                            <div class="service-item">
+                                <img src="{{ asset('images/produits/' ~ partenaire.getImage()) }}"  style=" width:150px" alt="Image du produit">
+                                <h4>{{ partenaire.getNomE() | upper }}</h4>
+                              
+                                <p>Email :  {{ partenaire.getMailE()  }} </p>
+                                <p>Emplacement :  {{ partenaire.getEmplacement() }}</p> 
+                                <p>Telephone :  {{ partenaire.getTel() }}</p>
+                                <p>Nom Agence :  {{ partenaire.getUser() }}</p>
+                               <p>  <a href="{{ path('app_part_detail', {id: partenaire.getId()}) }}" class="btn btn-success">Show Details</a> </p>
+
+                            </div>
+                        </div><!-- END COL -->
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+            </div> <!-- End row -->
+
+            <!-- Pagination Container -->
+            <div class="row">
+                <div class="col-md-12 text-center" id="pagination-container">
+                    <!-- Pagination links will be dynamically added here -->
+                </div>
+            </div> <!-- End Pagination -->
+        </div> <!-- End container -->
+    </section> <!-- End section -->
+    
+
+    <!-- JavaScript for Pagination -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemsPerPage = 3; // Change this value as needed
+            const partners = document.querySelectorAll('.partner-item');
+            const numPages = Math.ceil(partners.length / itemsPerPage);
+
+            function paginate(page) {
+                partners.forEach((partner, index) => {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        partner.style.display = 'block';
+                    } else {
+                        partner.style.display = 'none';
+                    }
+                });
+            }
+
+            function createPaginationLinks() {
+                const paginationContainer = document.getElementById('pagination-container');
+                for (let i = 1; i <= numPages; i++) {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = i;
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        paginate(i);
+                    });
+                    paginationContainer.appendChild(link);
+                    paginationContainer.appendChild(document.createTextNode(' '));
+                }
+            }
+
+            createPaginationLinks();
+            paginate(1); // Show the first page initially
+        });
+    </script>
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#search').keyup(function(){
+                searchItems($(this).val());
+            });
+        });
+
+        function searchItems(value){
+            $('.partner-item').each(function(){
+                var found = false;
+                $(this).find('h4').each(function(){
+                    if($(this).text().toLowerCase().includes(value.toLowerCase())){
+                        found = true;
+                        return false;
+                    }
+                });
+                if(found || value === ''){
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -9,7 +9,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ['mail'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -40,7 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[Assert\NotBlank]
-    #[Assert\Choice(['agence', 'benevole','employé'])]
+    #[Assert\Choice(['agence', 'benevole','employé','admin'])]
     #[ORM\Column(length: 255)]
     private ?string $role = null;
 
@@ -52,13 +54,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $mail = null;
 
    
-    #[Assert\NotBlank]
-    #[Assert\IsTrue(message: 'The password cannot match your first name')]
+    
+    #[Assert\IsTrue(
+        message: 'The password cannot match your first name.',
+    )]
     public function isPasswordSafe(): bool
     {
         return $this->nom !== $this->motdepasse;
     }
-    
+    #[Assert\Regex(
+        pattern: '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-_=+{};:,<.>]).{8,}$/',
+        message: 'Your password is too weak. Please include at least one uppercase letter, one lowercase letter, one digit, and one special character.'
+    )]
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
     private ?string $motdepasse = null;
 
@@ -67,6 +75,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $DN = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $status = "inactive";
+
+    #[ORM\Column(length: 255)]
+    private ?string $num_tel = null;
+
+    public function __toString(): string
+    {
+        return $this->getNom() ;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -166,5 +184,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // Implement to return the username of the user
         return $this->mail;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getNumTel(): ?string
+    {
+        return $this->num_tel;
+    }
+
+    public function setNumTel(string $num_tel): static
+    {
+        $this->num_tel = $num_tel;
+
+        return $this;
     }
 }

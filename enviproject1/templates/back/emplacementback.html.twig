@@ -1,0 +1,88 @@
+{% extends 'homeback.html.twig' %}
+{% block body %}
+        <div class="content-body">
+            <div class="container-fluid mt-3">
+                <div class="row">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table class="table table-xs mb-0">
+                                            <thead>
+                                                <tr>
+        <th>ID</th>
+        <th>Name emplacement</th>
+		<th>Cost</th>
+        <th>Capacity</th>
+        <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                              {% for emplacement in emplacements %}
+                                            <tbody>
+                                                <tr>
+                                                     <td>
+            {{ emplacement.getId() }}
+        </td>
+        <td>
+            {{ emplacement.getNomEm() }}
+        </td>
+        <td>
+            {{ emplacement.getCout() }}
+        </td>
+        <td>
+            {{ emplacement.getCapacite() }}
+	
+
+        </td>
+                                                  
+                                                   <td>
+                                                   <a href="{{ path('app_empback_fedit', {id: emplacement.getId()}) }}"><i class="fa">&#x270E;</i></a>
+                                                   <a href="{{ path('app_emplacementback_delete', {id: emplacement.getId()}) }}"><i class="fa">&#xf014;</i></a>
+                                                   </td>
+                                                   
+                                            </tbody>
+                                              {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+               
+
+                
+
+               
+            </div>
+            <!-- #/ container -->
+               <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <button id="generatePdfButton" class="btn btn-primary btn-lg">Generate PDF</button>
+        </div>
+        </div>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('generatePdfButton').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        let pdf = new jsPDF();
+        
+        // Add title
+        pdf.setFontSize(22);
+        pdf.text('Liste des emplacements', 20, 20);
+
+        // Select the table you want to convert to PDF
+        // Make sure your table has an identifiable ID
+        const table = document.querySelector('.table-responsive table');
+        // Use autoTable to parse and add the table to the PDF
+        pdf.autoTable({ html: table });
+
+        // Save the PDF
+        pdf.save('Liste-des-emplacements.pdf');
+    });
+});
+</script>
+        {% endblock %}

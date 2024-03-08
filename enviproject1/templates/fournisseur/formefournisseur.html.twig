@@ -1,0 +1,175 @@
+{% extends 'basefront.html.twig' %}
+
+{% block image %}{% endblock %}
+{% block body %}
+<body id="body">
+
+
+<div class="hero-slider">
+        <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});" style="height: 100vh;">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        
+                            <div class="card-body">
+                                {% block content %}
+<h1 class="text-white"> Add Fournisseur </h1>
+{{form_start(form,{'attr':{'novalidate':'novalidate', 'class': 'text-white','class': 'text-danger'}})}}
+{{form_label(form.nom_fr,"Name", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.nom_fr, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.nom_fr, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.prenom_fr,"Last Name", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.prenom_fr, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.prenom_fr, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.age_fr,"Age", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.age_fr, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.age_fr, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.adress_fr,"Adress", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.adress_fr, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.adress_fr, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.equipement,"Equipement", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.equipement, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.equipement, {'attr': {'class': 'form-control'}})}}
+<br>
+
+<div  class="text-center">
+    <button type="submit" class="btn btn-success btn-lg">Submit</button>
+</div>
+
+{{form_end(form)}}
+
+{% endblock %}
+                            </div>
+                        </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--
+Start About Section
+==================================== -->
+
+<!--
+Start About Section
+==================================== -->
+
+
+<!--
+Start Call To Action
+==================================== -->
+
+
+<!--
+Start Counter Section
+==================================== -->
+
+
+<!-- Start Testimonial
+=========================================== -->
+    
+  
+
+<!--
+Start Blog Section
+=========================================== -->
+
+
+<footer id="footer" class="bg-one">
+  <div class="top-footer">
+    <div class="container">
+      <div class="row justify-content-around">
+        <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
+          <h3>about</h3>
+          <p>Integer posuere erat a ante venenati dapibus posuere velit aliquet. Fusce dapibus, tellus cursus commodo, tortor mauris sed posuere.</p>
+        </div>
+        <!-- End of .col-sm-3 -->
+
+        <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+          <ul>
+            <li>
+              <h3>Our Services</h3>
+            </li>
+            <li><a href="service.html">Ui/Ux Design</a></li>
+            <li><a href="service.html">Graphic Design</a></li>
+            <li><a href="service.html">Web Design</a></li>
+            <li><a href="service.html">Web Development</a></li>
+          </ul>
+        </div>
+        <!-- End of .col-sm-3 -->
+
+        <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+          <ul>
+            <li>
+              <h3>Quick Links</h3>
+            </li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="service.html">Services</a></li>
+            <li><a href="blog.html">Blogs</a></li>
+            <li><a href="404.html">404</a></li>
+          </ul>
+        </div>
+        <!-- End of .col-sm-3 -->
+
+        <div class="col-lg-3 col-md-6">
+          <ul>
+            <li>
+              <h3>Connect with us Socially</h3>
+            </li>
+            <li><a href="https://www.facebook.com/themefisher/">Facebook</a></li>
+            <li><a href="https://www.twitter.com/themefisher/">Twitter</a></li>
+            <li><a href="https://www.youtube.com/channel/UCx9qVW8VF0LmTi4OF2F8YdA">Youtube</a></li>
+            <li><a href="https://www.github.com/themefisher/">Github</a></li>
+          </ul>
+        </div>
+        <!-- End of .col-sm-3 -->
+
+      </div>
+    </div> <!-- end container -->
+  </div>
+  <div class="footer-bottom">
+    <h5>&copy; Copyright 2020. All rights reserved.</h5>
+    <h6>Design and Developed by <a href="https://themefisher.com/">Themefisher</a></h6>
+  </div>
+</footer> <!-- end footer -->
+
+
+<!-- end Footer Area
+========================================== -->
+<!-- 
+    Essential Scripts
+    =====================================-->
+<!-- Main jQuery -->
+{% block java %}
+<script src="{{ asset('front/plugins/jquery/jquery.min.js')}}"></script>
+
+<!-- Bootstrap4 -->
+<script src="{{ asset('front/plugins/bootstrap/bootstrap.min.js')}}"></script>
+<!-- Parallax -->
+<script src="{{ asset('front/plugins/parallax/jquery.parallax-1.1.3.js')}}"></script>
+<!-- lightbox -->
+<script src="{{ asset('front/plugins/lightbox2/js/lightbox.min.js')}}"></script>
+<!-- Owl Carousel -->
+<script src="{{ asset('front/plugins/slick/slick.min.js')}}"></script>
+<!-- filter -->
+<script src="{{ asset('front/plugins/filterizr/jquery.filterizr.min.js')}}"></script>
+<!-- Smooth Scroll js -->
+<script src="{{ asset('front/plugins/smooth-scroll/smooth-scroll.min.js')}}"></script>
+<!-- Google Map -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU"></script>
+<script src="{{ asset('front/plugins/google-map/gmap.js')}}"></script>
+{% endblock %}
+{% block javas %}
+  
+<!-- Custom js -->
+<script src="{{ asset('front/js/script.js')}}"></script>
+{% endblock %} 
+</body>
+{% endblock %} 
+

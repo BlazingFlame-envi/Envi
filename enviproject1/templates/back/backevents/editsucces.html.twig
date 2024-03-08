@@ -1,0 +1,50 @@
+{% extends 'homeback.html.twig' %}
+
+{% block body %}
+
+
+     <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_succes_back') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ path('app_succes_back') }}">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+
+
+          
+
+            <div class="container-fluid">
+{{form_start(form,{'attr':{'novalidate':'novalidate', 'class': 'text-black','class': 'text-danger'}})}}
+{{form_label(form.type_s,"Type", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.type_s, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.type_s, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.nombenef_s,"Beneficiare", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.nombenef_s, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.nombenef_s, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.nomspon_s,"Sponsor", {'label_attr': {'class': 'text-black'}})}}
+{{form_errors(form.nomspon_s, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.nomspon_s, {'attr': {'class': 'form-control'}})}}
+<br>
+
+
+<div  class="text-center">
+    <button href="{{ path('app_taches_index') }}" type="submit" class="btn btn-success btn-lg">Modify</button>
+</div>
+
+<br>
+{{form_end(form)}}
+
+            </div>
+            <!-- #/ container -->
+            
+        
+
+</div>
+{% endblock %}

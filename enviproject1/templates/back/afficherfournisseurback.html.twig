@@ -1,0 +1,175 @@
+
+
+
+
+
+
+{% extends 'homeback.html.twig' %}
+{% block body %}
+    <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+     <style>
+        .sortable {
+            cursor: pointer;
+        }
+           </style>
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    <script src="{{ asset( 'assetsback/js/jquery.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+    <div class="content-body">
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-lg-12 text-center" id="pagination-container">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="active-member">
+                                <div class="table-responsive">
+                                    <div class="input-group mb-3" id="partner-list">
+                                        <span class="input-group-text bg-transparent border-0" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+                                        <input type="search" class="form-control" placeholder="Chercher" id="search">
+                                    </div>
+                                    <table class="table table-xs mb-0" id="tableac">
+                                        <thead>
+                                            <tr>                                     
+       <th>ID</th>
+        <th>Nom</th>
+		<th>prenom</th>
+		 <th>age</th>
+        <th>adress</th>
+                                <th>Edit</th>
+                                                <th>Delete</th>
+                                               </tr>
+                                        </thead>
+                                        <tbody>
+    {% for author in authors %}
+                                           
+                                              
+                                                     <tr>
+                <td>{{ author.getId() }}</td>
+                <td>{{ author.getNomFr() | upper }}</td>
+                <td>{{ author.getPrenomFr() }}</td>
+                <td>{{ author.getAgeFr() }}</td>
+                <td>{{ author.getAdressFr() }}</td>
+                <td class="actions"><a href="{{ path('app_fournisseur_fedit_back', {id: author.id}) }}"><i class="fa">&#x270E;</i></a></td>
+                <td class="actions"><a href="{{ path('app_fournisseur_delete_back', {id: author.id}) }}"><i class="fa">&#xf014;</i></a></td>
+            </tr>
+                                                   
+                                             
+                                              {% endfor %}
+                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+             <div  class="text-center">
+        <a href="{{ path('app_fournisseur_fnew_back') }}" class="btn btn-success btn-lg">Ajouter fournisseur</a>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <button id="generatePdfButton" class="btn btn-primary btn-lg">Generate PDF</button>
+        <button id="generateExcelButton" class="btn btn-primary btn-lg">Generate Excel</button>
+
+</div>  
+        </div>
+        </div>
+    </div>
+            
+        
+         
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('generatePdfButton').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        let pdf = new jsPDF();
+        
+        // Add title
+        pdf.setFontSize(22);
+        pdf.text('Liste des Equipements', 20, 20);
+
+        // Select the table you want to convert to PDF
+        // Make sure your table has an identifiable ID
+        const table = document.querySelector('.table-responsive table');
+        // Use autoTable to parse and add the table to the PDF
+        pdf.autoTable({ html: table });
+
+        // Save the PDF
+        pdf.save('Liste-des-Equipements.pdf');
+    });
+});
+</script>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('search').addEventListener('keyup', function() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("search");
+                filter = input.value.toUpperCase();
+                table = document.querySelector('.table-responsive table');
+                tr = table.getElementsByTagName("tr");
+
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[1]; // Change index to match the column you want to search
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
+
+<!-- Include js-xlsx library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('generateExcelButton').addEventListener('click', function() {
+        // Select the table you want to convert to Excel
+        // Make sure your table has an identifiable ID
+        const table = document.querySelector('.table-responsive table');
+        
+        // Convert table to worksheet
+        const ws = XLSX.utils.table_to_sheet(table);
+
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+        // Save the Excel file
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        saveExcelFile(excelBuffer, 'Liste-des-Fournisseur.xlsx');
+    });
+});
+
+function saveExcelFile(buffer, filename) {
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 0);
+}
+</script>
+
+
+
+
+        {% endblock %}

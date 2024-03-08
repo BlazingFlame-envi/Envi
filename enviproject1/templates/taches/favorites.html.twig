@@ -1,0 +1,75 @@
+
+
+
+{% extends 'basefront.html.twig' %}
+
+{% block body %}
+    <section class="service-2 section">
+        <div class="container">
+            <h2>Tâches Favorites</h2>
+            <div class="col-md-12 title text-center">
+                        <p><a href="{{ path('app_taches_index') }}" class="btn btn-success">Retour aux Taches</a> </p>
+                        </div>
+            <div class="row text-center">
+                {% for tache in favorites %}
+                    <div class="col-md-4 col-sm-4 partner-item">
+                        <div class="service-item">
+                            <h4>{{ tache.nomT | upper }}</h4>
+                            <p>Type :  {{ tache.typeT }} </p>
+                            <p>Nombre de Participants :  {{ tache.nbpartT }} </p>
+                            <p>Emplacement :  {{ tache.emplT  }}</p> 
+                            <p>Date :  {{ tache.dateT ? tache.dateT|date('Y-m-d') : '' }}</p>
+                            <p>Succes :  {{ tache.succes }} </p>
+                             {% if tache.favoris %}
+                            <button class="btn btn-warning unfavorite-btn" data-tache="{{ tache.id }}">Retirer des favoris</button>
+                             {% endif %}
+                            <br>
+                            <p>  <a href="{{ path('app_taches_delete',{'id': tache.id}) }}"><i class="fa">&#xf014;</i>Delete</a> </p>
+                            <p><a href="{{ path('app_taches_edit', {'id': tache.id}) }}" class="btn btn-success">Edit</a></p>
+                        </div>
+                    </div><!-- END COL -->
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.favorite-btn').click(function() {
+        var tacheId = $(this).data('tache');
+        var button = $(this);
+        
+        $.post('/marquer-favoris/' + tacheId, function(response) {
+            if (response.success) {
+                // Mettre à jour la vue si l'action a réussi
+                button.text('Retirer des favoris');
+                button.removeClass('btn-primary').addClass('btn-warning');
+                button.removeClass('favorite-btn').addClass('unfavorite-btn');
+                location.reload();
+                // Autres mises à jour de la vue si nécessaire
+            } else {
+                // Gérer les erreurs si nécessaire
+            }
+        });
+    });
+
+    $('.unfavorite-btn').click(function() {
+        var tacheId = $(this).data('tache');
+        var button = $(this);
+        
+        $.post('/retirer-favoris/' + tacheId, function(response) {
+            if (response.success) {
+                // Mettre à jour la vue si l'action a réussi
+                button.text('Ajouter aux favoris');
+                button.removeClass('btn-warning').addClass('btn-primary');
+                button.removeClass('unfavorite-btn').addClass('favorite-btn');
+                location.reload();
+                // Autres mises à jour de la vue si nécessaire
+            } else {
+                // Gérer les erreurs si nécessaire
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

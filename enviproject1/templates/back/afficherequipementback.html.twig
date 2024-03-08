@@ -1,0 +1,254 @@
+
+{% extends 'homeback.html.twig' %}
+{% block body %}
+       <link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+     <style>
+        .sortable {
+            cursor: pointer;
+        }
+           </style>
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    <script src="{{ asset( 'assetsback/js/jquery.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+    <div class="content-body">
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-lg-12 text-center" id="pagination-container">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="active-member">
+                                <div class="table-responsive">
+                                    <div class="input-group mb-3" id="partner-list">
+                                        <span class="input-group-text bg-transparent border-0" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+                                        <input type="search" class="form-control" placeholder="Chercher" id="search">
+                                    </div>
+                                    <table class="table table-xs mb-0" id="tableac">
+                                        <thead>
+                                            <tr>
+                                                          
+       <th>ID</th>
+        <th>Nom</th>
+		<th>Type</th>
+		 <th>Disponibilite</th>
+        <th>Quantite</th>
+                <th>Prix</th>
+                                <th colspan="2" >Actions</th>
+                                                </tr>
+                                            </thead>
+    {% for author in authors %}
+                                            <tbody>
+                                                <tr>
+                                                     <tr>
+                <td>{{ author.getId() }}</td>
+                <td>{{ author.getNomEq() | upper }}</td>
+                <td>{{ author.getTypeEq() }}</td>
+                <td>{{ author.getDisponibiliteEq() }}</td>
+                <td>{{ author.getQuantiteEq() }}</td>
+                <td>{{ author.getPrixEq() }}</td>
+                <td class="actions"><a href="{{ path('app_equipementback_fedit', {id: author.id}) }}"><i class="fa">&#x270E;</i></a></td>
+                <td class="actions"><a href="{{ path('app_equipementback_delete', {id: author.id}) }}"><i class="fa">&#xf014;</i></a></td>
+            </tr>
+                                                   
+                                            </tbody>
+                                              {% endfor %}
+                              </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div  class="text-center">
+      <a href="{{ path('app_equipement_triback') }}" class="btn btn-success btn-lg"> Fournisseur Ordered </a>
+        <a href="{{ path('app_equipementback_fnew') }}" class="btn btn-success btn-lg">Ajouter equipement</a>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <button id="generatePdfButton" class="btn btn-primary btn-lg">Generate PDF</button>
+    
+    <button id="generateExcelButton" class="btn btn-primary btn-lg">Generate Excel</button>
+</div>  
+<button id="downloadChartButton" class="btn btn-primary btn-lg">Download Chart</button>
+<br>
+                <canvas id="myChart" style="width:100%;max-width:600px;text-align: center"></canvas>                
+        </div>
+            </div>
+        </div>
+    </div>
+            <!-- #/ container -->
+    
+        
+            <!-- #/ statistique -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+<script>
+    // Chart data
+    var xValues = [];
+    var yValues = [];
+    {% for author in authors %}
+    xValues.push("{{ author.getNomEq }}");
+    yValues.push("{{ author.getQuantiteEq }}");
+    {% endfor %}
+
+    // Create Chart instance
+    var myChart = new Chart("myChart", {
+        type: "bar",
+        data: {
+            labels: xValues,
+            datasets: [{
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 2,
+                data: yValues,
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: "Quantités des equipement",
+                fontColor: 'rgba(120,10,10,1.8)', // sets font color for y-axis labels
+            },
+            animation: {
+                duration: 5000,
+                easing: 'easeOutBounce' // add a bouncing effect at the end of the animation
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        fontColor: 'rgba(120,10,10,1.8)', // sets font color for y-axis labels
+                        fontSize: 14 // sets font size for y-axis labels
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: 'rgba(120,10,10,1.8)', // sets font color for x-axis labels
+                        fontSize: 14 // sets font size for x-axis labels
+                    }
+                }]
+            }
+        }
+    });
+
+    // Add event listener to download button
+    document.getElementById('downloadChartButton').addEventListener('click', function() {
+        // Convert the chart to a base64 image URL
+        var imageBase64 = myChart.toBase64Image();
+
+        // Create a link element
+        var downloadLink = document.createElement('a');
+        downloadLink.href = imageBase64; // Set the href attribute to the base64 image URL
+        downloadLink.download = 'chart.jpg'; // Set the download attribute with the desired file name
+        downloadLink.click(); // Simulate a click on the link to trigger the download
+    });
+</script>
+            <!-- #/ pdf -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('generatePdfButton').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        let pdf = new jsPDF();
+        
+        // Add title
+        pdf.setFontSize(22);
+        pdf.text('Liste des Equipements', 20, 20);
+
+        // Select the table you want to convert to PDF
+        // Make sure your table has an identifiable ID
+        const table = document.querySelector('.table-responsive table');
+        // Use autoTable to parse and add the table to the PDF
+        pdf.autoTable({ html: table });
+
+        // Save the PDF
+        pdf.save('Liste-des-Equipements.pdf');
+    });
+});
+</script>
+
+            <!-- #/ research -->
+
+
+   <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('search').addEventListener('keyup', function() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("search");
+                filter = input.value.toUpperCase();
+                table = document.querySelector('.table-responsive table');
+                tr = table.getElementsByTagName("tr");
+
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[1]; // Change index to match the column you want to search
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+<!-- Include js-xlsx library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('generateExcelButton').addEventListener('click', function() {
+        // Select the table you want to convert to Excel
+        // Make sure your table has an identifiable ID
+        const table = document.querySelector('.table-responsive table');
+        
+        // Convert table to worksheet
+        const ws = XLSX.utils.table_to_sheet(table);
+
+        // Create workbook
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+        // Save the Excel file
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        saveExcelFile(excelBuffer, 'Liste-des-Equipements.xlsx');
+    });
+});
+
+function saveExcelFile(buffer, filename) {
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(() => {
+        URL.revokeObjectURL(url);
+    }, 0);
+}
+</script>
+
+        {% endblock %}

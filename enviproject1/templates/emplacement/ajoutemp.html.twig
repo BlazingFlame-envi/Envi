@@ -1,0 +1,57 @@
+{% extends 'basefront.html.twig' %}
+
+
+
+
+{% block image %}{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block body %}
+<body id="body">
+
+
+<div class="hero-slider">
+        <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});" style="height: 100vh;">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        
+                            <div class="card-body">
+                                
+<h1 class="text-white"> Add Emplacement </h1>
+{{form_start(f,{'attr':{'novalidate':'novalidate', 'class': 'text-white','class': 'text-danger'}})}}
+{{form_label(f.nom_em,"Name emplacement", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.nom_em, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.nom_em, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.cout,"cost", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.cout, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.cout, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.capacite,"Capacity", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.capacite, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.capacite, {'attr': {'class': 'form-control'}})}}
+<br>
+<div  class="text-center">
+    <button type="submit" class="btn btn-success btn-lg">Submit</button>
+</div>
+{{form_end(f)}}
+
+
+                            </div>
+                        </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

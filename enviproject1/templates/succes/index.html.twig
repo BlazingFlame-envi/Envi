@@ -1,0 +1,148 @@
+{% extends 'basefront.html.twig' %}
+
+{% block body %}
+{% for flashMessage in app.flashes('success') %}
+    <!-- Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Félicitations!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" role="alert">
+                        {{ flashMessage }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+    <section class="service-2 section">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-6">
+                    <!-- section title -->
+                    <div class="title text-center">
+                        <h2>Les Succes</h2>
+                        
+                        <input type="text" id="search" placeholder="Rechercher par nom..." class="form-control">
+                        <div class="border"></div>
+                    </div>
+                    <!-- /section title -->
+                </div>
+            </div>
+            <div class="row" id="partner-list">
+
+                <div class="col-md-12">
+                    <div class="row text-center">
+                        {% for succe in succes %}
+                        <div class="col-md-4 col-sm-4 partner-item">
+                            <div class="service-item">
+                                
+                                <h4>{{ succe.typeS | upper }}</h4
+                                <p>Nom du Beneficiaire :  {{ succe.nombenefS }} </p>
+                                <p>Sponsor :  {{ succe.nomsponS  }}</p> 
+                               <p>  <a href="{{ path('app_succes_delete',{'id': succe.id}) }}"><i class="fa">&#xf014;</i>Delete</a> </p>
+                               <p><a href="{{ path('app_succes_edit', {'id': succe.id}) }}"class="btn btn-success">Edit</a></p>
+
+                            </div>
+                        </div><!-- END COL -->
+                        {% endfor %}
+                        <div class="col-md-12 title text-center">
+                        <p><a href="{{ path('app_succes_new') }}" class="btn btn-success">Ajouter Succes</a> </p>
+                        <br>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- End row -->
+
+            <!-- Pagination Container -->
+            <div class="row">
+                <div class="col-md-12 text-center" id="pagination-container">
+                    <!-- Pagination links will be dynamically added here -->
+                </div>
+            </div> <!-- End Pagination -->
+        </div> <!-- End container -->
+    </section> <!-- End section -->
+
+    <!-- JavaScript for Pagination -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemsPerPage = 3; // Change this value as needed
+            const partners = document.querySelectorAll('.partner-item');
+            const numPages = Math.ceil(partners.length / itemsPerPage);
+
+            function paginate(page) {
+                partners.forEach((partner, index) => {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        partner.style.display = 'block';
+                    } else {
+                        partner.style.display = 'none';
+                    }
+                });
+            }
+
+            function createPaginationLinks() {
+                const paginationContainer = document.getElementById('pagination-container');
+                for (let i = 1; i <= numPages; i++) {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = i;
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        paginate(i);
+                    });
+                    paginationContainer.appendChild(link);
+                    paginationContainer.appendChild(document.createTextNode(' '));
+                }
+            }
+
+            createPaginationLinks();
+            paginate(1); // Show the first page initially
+        });
+    </script>
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#search').keyup(function(){
+                searchItems($(this).val());
+            });
+        });
+
+        function searchItems(value){
+            $('.partner-item').each(function(){
+                var found = false;
+                $(this).find('h4').each(function(){
+                    if($(this).text().toLowerCase().includes(value.toLowerCase())){
+                        found = true;
+                        return false;
+                    }
+                });
+                if(found || value === ''){
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    </script>
+     <script>
+    // Afficher le modal dès que la page est chargée
+    $(document).ready(function() {
+        $('#successModal').modal('show');
+    });
+</script>
+{% endblock %}
+
+
+
