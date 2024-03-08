@@ -21,6 +21,15 @@ class PanierRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findPaniersByUser($id_user)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.id_user = :id_user')
+            ->setParameter('id_user', $id_user)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Panier::class);

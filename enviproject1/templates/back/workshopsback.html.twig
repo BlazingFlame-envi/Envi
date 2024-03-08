@@ -1,0 +1,99 @@
+{% extends 'homeback.html.twig' %}
+{% block body %}
+        <div class="content-body">
+            <div class="container-fluid mt-3">
+                <div class="row">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table class="table table-xs mb-0">
+                                            <thead>
+                                                <tr>
+                                        
+        <th>ID</th>
+        <th>Name course</th>
+		<th>Name tutor</th>
+        <th>Date</th>
+        <th>Duration</th>
+        <th>Emplacement</th>
+        <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                              {% for workshop in workshops %}
+                                            <tbody>
+                                                <tr>
+                                                     <td>
+            {{ workshop.getId() }}
+        </td>
+        <td>
+            {{ workshop.getNomC() }}
+        </td>
+        <td>
+            {{ workshop.getNomTuteur() }}
+        </td>
+        <td>
+            {{ workshop.getDateC() | date('Y-m-d ') }}
+        </td>
+        <td>
+            {{ workshop.getDureeC() }}
+			        <td>
+
+			          {{  workshop.getEmplacement() }}
+						        </td>
+
+        </td>
+                                                  
+                                                   <td>
+                                                   <a href="{{ path('app_workback_fedit', {id: workshop.getId()}) }}"><i class="fa">&#x270E;</i></a>
+                                                   <a href="{{ path('app_workshopsback_delete', {id: workshop.getId()}) }}"><i class="fa">&#xf014;</i></a>
+
+                                                   </td>
+                                                   {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+               
+
+                
+
+               
+            </div>
+            <!-- #/ container -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <button id="generatePdfButton" class="btn btn-primary btn-lg">Generate PDF</button>
+        </div>
+        </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('generatePdfButton').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        let pdf = new jsPDF();
+        
+        // Add title
+        pdf.setFontSize(22);
+        pdf.text('Liste des Cours', 20, 20);
+
+        // Select the table you want to convert to PDF
+        // Make sure your table has an identifiable ID
+        const table = document.querySelector('.table-responsive table');
+        // Use autoTable to parse and add the table to the PDF
+        pdf.autoTable({ html: table });
+
+        // Save the PDF
+        pdf.save('Liste-des-Cours.pdf');
+    });
+});
+</script>
+        {% endblock %}

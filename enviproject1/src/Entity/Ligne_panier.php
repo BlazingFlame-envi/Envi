@@ -20,8 +20,8 @@ class Ligne_panier
 
 
 
-    #[ORM\ManyToOne(inversedBy: 'Produit')]
-    #[ORM\JoinColumn(name: "id_produit", nullable: true)]
+    #[ORM\ManyToOne(targetEntity: Produit::class, fetch: 'EAGER')]
+    #[ORM\JoinColumn(name: "id_produit", referencedColumnName: "id", nullable: true)]
     private ?Produit $id_produit = null;
 
     #[ORM\ManyToOne(inversedBy: 'Panier')]

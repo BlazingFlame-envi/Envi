@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Taches;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
 
 /**
  * @extends ServiceEntityRepository<Taches>
@@ -20,6 +21,40 @@ class TachesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Taches::class);
     }
+   public function findNouvellesTachesDepuis($lastCheck)
+    {
+        // Implémentez la logique pour récupérer les nouvelles tâches depuis $lastCheck
+        // Par exemple, vous pouvez utiliser une requête Doctrine pour sélectionner les tâches ajoutées après $lastCheck
+        return $this->createQueryBuilder('t')
+            ->where('t.date_t > :lastCheck')
+            ->setParameter('lastCheck', $lastCheck)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
+    public function getEntrepriseByUser($user)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.user = :user')
+            ->setParameter('user', $user) 
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getEntrepriseByUserFavories($user,$favories)
+    {
+        return $this->createQueryBuilder('e')
+        ->where('e.user = :user')
+        ->andWhere('e.favoris= :favoris')
+        ->setParameter('user', $user)
+        ->setParameter('favoris', $favories)
+        ->getQuery()
+        ->getResult();
+    }
+
 
 //    /**
 //     * @return Taches[] Returns an array of Taches objects

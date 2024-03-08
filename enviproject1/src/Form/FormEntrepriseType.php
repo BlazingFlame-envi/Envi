@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class FormEntrepriseType extends AbstractType
 {
@@ -17,9 +18,13 @@ class FormEntrepriseType extends AbstractType
             ->add('emplacement')
             ->add('tel')
             ->add('mail_e')
+            ->add('imageFile', FileType::class, [
+                'label' => 'Image du produit',
+                'required' => false,
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
-                'attr' => ['class' => 'btn btn-primary btn-lg']
+                'attr' => ['class' => 'btn btn-success btn-lg']
             ])
         ;
     }

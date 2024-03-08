@@ -13,21 +13,41 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-
+use Symfony\Component\Validator\Constraints\Required;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 class FormProduit extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom_produit')
-            ->add('prix', NumberType::class, [
+            ->add('nom_produit', TextType::class, [
                 'constraints' => [
-                    new Positive(['message' => 'Le prix doit être positif.']),
+                    new NotBlank([
+                        'message' => 'The product name is required.',
+                    ]),
+                    new Regex([
+                        'pattern' => '/^[A-Z].*$/',
+                        'message' => 'The product name must start with an uppercase letter.',
+                    ]),
+                ],
+            ])
+            ->add('prix', NumberType::class, [
+
+                'constraints' => [
+                    new Positive(['message' => 'The price must be positive.']),
                 ],
             ])
             ->add('quantite', NumberType::class, [
                 'constraints' => [
-                    new GreaterThanOrEqual([ 'value' => 0,'message' => 'la quantité doit être positive.']),
+
+                    new GreaterThanOrEqual([
+                        'value' => 0,
+                        'message' => 'The quantity must be positive.',
+                    ]),
+
                 ],
             ])
             ->add('id_categorie', EntityType::class, [
@@ -37,7 +57,7 @@ class FormProduit extends AbstractType
             ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Image du produit',
-                'required' => false,
+                'required' => true,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',

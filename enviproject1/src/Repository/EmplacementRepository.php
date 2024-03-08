@@ -45,4 +45,14 @@ class EmplacementRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function getEntrepriseByUser($user)
+{
+    return $this->createQueryBuilder('e')
+        ->where('e.user = :user')
+        ->setParameter('user', $user) 
+        ->getQuery()
+        ->getResult();
+}
+
 }

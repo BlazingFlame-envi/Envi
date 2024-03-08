@@ -3,6 +3,11 @@
     <title>Welcome to envi</title>
 {% endblock %}
 {% block header %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
     <header class="navigation fixed-top">
         <div class="container">
             <!-- main nav -->
@@ -21,60 +26,93 @@
 
                 <div class="collapse navbar-collapse" id="navigation">
                     <ul class="navbar-nav ml-auto text-center">
-                        <li class="nav-item dropdown active">
+
+                        <li class="nav-item dropdown ">
                             <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Homepage <i class="tf-ion-chevron-down"></i>
+                                Partners <i class="tf-ion-chevron-down"></i>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ path('app_partenaire') }}">Homepage</a></li>
-                                <li><a class="dropdown-item" href="onepage-slider.html">Onepage</a></li>
-                                <li><a class="dropdown-item" href="onepage-text.html">Onepage 2</a></li>
-
-                                <li class="dropdown dropdown-submenu dropright">
-                                    <a class="dropdown-item dropdown-toggle" href="#!" id="dropdown0501" role="button"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sub Menu <i
-                                                class="tf-ion-chevron-down"></i></a>
-
-                                    <ul class="dropdown-menu" aria-labelledby="dropdown0501">
-                                        <li><a class="dropdown-item" href="index.html">Submenu 01</a></li>
-                                        <li><a class="dropdown-item" href="index.html">Submenu 02</a></li>
-                                    </ul>
+                                {% if app.user.role == 'agence' %}
+                                    <li><a class="dropdown-item" href="{{ path('app_partenaire_fnew') }}">Add
+                                            Partner</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{{ path('app_partenaire_list') }}">Show Partners</a>
                                 </li>
+                                {% if app.user.role == 'agence' %}
+                                    <li><a class="dropdown-item" href="{{ path('app_offre_fnew') }}">Add Offer</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{{ path('app_offre') }}">Show Offers</a></li>
                             </ul>
                         </li>
+
+
+                        <li class="nav-item ">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown03" role="button"
+                               data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">Events<i class="tf-ion-chevron-down"></i>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown02">
+                                <li><a class="dropdown-item" href="{{ path('app_taches_index') }}">Show Tasks</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_taches_favorites') }}"> Favorite
+                                        Tasks</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_succes_index') }}">Show Succes</a></li>
+                            </ul>
+                        </li>
+
+                        </li>
+                        {% if app.user.role != 'benevole' %}
+                            <li class="nav-item dropdown ">
+                                <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Stock <i class="tf-ion-chevron-down"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{{ path('app_equipement') }}">Show
+                                            Equipements</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_equipement_fnew') }}">Add
+                                            Equipement</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_fournisseur') }}">Show
+                                            Fournisseurs</a></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_fournisseur_fnew') }}">Add
+                                            Fournisseur</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
+
+                        <li class="nav-item ">
+                            <a class="nav-link" href="{{ path('shop') }}">Shop</a>
+                        </li>
+
                         <li class="nav-item ">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown03" role="button"
                                data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
-                                Partenaire et Offre <i class="tf-ion-chevron-down"></i>
+                                Workshops <i class="tf-ion-chevron-down"></i>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown02">
-                                <li><a class="dropdown-item" href="{{ path('app_partenaire1') }}">Afficher
-                                        Partenaire</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_partenaire_fnew') }}">Ajouter
-                                        Partenaire</a></li>
-                                <li><a class="dropdown-item" href="{{ path('app_offre') }}">Offre</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_workshops_list') }}">Show Workshops</a>
+                                </li>
+                                {% if app.user.role != 'benevole' %}
+                                    <li><a class="dropdown-item" href="{{ path('app_workshops_fnew') }}">Add
+                                            Workshop</a></li>
+                                {% endif %}
+                                <li><a class="dropdown-item" href="{{ path('app_emplacement1_list') }}">Show
+                                        Emplacements</a></li>
+                                {% if app.user.role != 'benevole' %}
+                                    <li><a class="dropdown-item" href="{{ path('app_emplacement_fnew') }}">Add
+                                            Emplacement</a></li>
+                                {% endif %}
 
 
                             </ul>
+
                         </li>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" href="{{ path('app_back') }}">back</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="{{ path('shop') }}">Shop</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="team.html">Team</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="pricing.html">Pricing</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="contact.html">Contact</a>
+                            <a class="nav-link" href="{{ path('app_chat_index') }}">Chatbot</a>
                         </li>
 
                         <li class="nav-item dropdown">
@@ -91,20 +129,25 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown02">
                                 {% if app.user %}
-                                    <li><a class="dropdown-item" href="{{ path('app_user_fedit', {id: app.user.id}) }}">Account
-                                            settings</a></li>
+                                <li><a class="dropdown-item" href="{{ path('user_show_details', {id: app.user.id}) }}">Account
+                                        settings</a></li>
+                                {% if app.user.role != 'agence'%}
+
+                                <li><a class="dropdown-item" href="{{ path('historique_achat_user', {id: app.user.id}) }}">
+                                        Historique des achats</a></li>
+                                {% endif %}
                                 {% endif %}
                                 <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
 
                             </ul>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" data-toggle="modal" data-target="#exampleModal"
-                               onclick="afficherPanier({{ app.user.id }})"><i class="fa-solid fa-cart-shopping"></i></a>
+                        {% if app.user.role != 'agence' %}
+                      <li class="nav-item ">
+                        <a class="nav-link" data-toggle="modal" data-target="#exampleModal"
+                           onclick="afficherPanier({{ app.user.id }})"><i class="fa-solid fa-cart-shopping"></i></a>
+                      </li>
+                        {% endif %}
                         </li>
-                        </li>
-
-
                     </ul>
                 </div>
             </nav>
@@ -112,444 +155,115 @@
         </div>
     </header>
 {% endblock %}
-
-
 {% block image %}
 <body id="body">
+
 <div class="hero-slider">
     <div class="slider-item th-fullpage hero-area"
          style="background-image: url({{ asset('front/images/slider/envi.jpg') }});">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">Crafting Digital <br>
-                        Experience</h1>
-                    <p data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".5">Lorem ipsum dolor sit amet,
-                        consectetur adipisicing elit. Quod, <br> veritatis tempore nostrum id
-                        officia quaerat eum corrupti, <br> ipsa aliquam velit.</p>
-                    <a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn btn-success"
-                       href="service.html">Explore Us</a>
+                    <h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">Welcome To Envi !<br>
+                        Welcome {{ app.user.getNom() }}</h1>
+                    <p data-duration-in=".3" data-animation-in="fadeInUp"
+                       data-delay-in=".5">{{ app.user.getRole() | upper }}<br>
                 </div>
             </div>
         </div>
     </div>
-    <div class="slider-item th-fullpage hero-area"
-         style="background-image: url({{ asset('front/images/slider/envi.jpg)') }};">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <h1 data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".1">We Combine Design <br>
-                        and
-                        Creativity</h1>
-                    <p data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".5">Create just what you need
-                        for your Perfect Website. Choose from a wide range
-                        <br> of Elements & simply put them on our Canvas.</p>
-                    <a data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8" class="btn btn-success"
-                       href="service.html">Explore Us</a>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 {% endblock %}
+
+
 {% block body %}
-<!--
-Start About Section
-==================================== -->
-<section class="service-2 section">
-    <div class="container">
-        <div class="row justify-content-center">
+    <body id="body">
 
-            <div class="col-lg-6">
-                <!-- section title -->
-                <div class="title text-center">
-                    <h2>What Do We Offer</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit. Voluptates, earum. </p>
-                    <div class="border"></div>
-                </div>
-                <!-- /section title -->
-            </div>
-        </div>
-        <div class="row">
 
-            <div class="col-md-4 text-center d-none d-md-block">
-                <img loading="lazy" src="{{ asset('front/images/about/member.jpg') }}" class="img-fluid inline-block"
-                     alt="">
-            </div>
-            <div class="col-md-8">
-                <div class="row text-center">
-                    <div class="col-md-6 col-sm-6">
-                        <div class="service-item">
-                            <i class="tf-ion-ios-alarm-outline"></i>
-                            <h4>Time Management</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
-                                venenatis.</p>
-                        </div>
-                    </div><!-- END COL -->
-                    <div class="col-md-6 col-sm-6">
-                        <div class="service-item">
-                            <i class="tf-ion-ios-briefcase-outline"></i>
-                            <h4>Marketing Ideas</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
-                                venenatis.</p>
-                        </div>
-                    </div><!-- END COL -->
-                    <div class="col-md-6 col-sm-6">
-                        <div class="service-item">
-                            <i class="tf-ion-ios-email-outline"></i>
-                            <h4>Mail Support</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
-                                venenatis.</p>
-                        </div>
-                    </div><!-- END COL -->
-                    <div class="col-md-6 col-sm-6">
-                        <div class="service-item">
-                            <i class="tf-ion-ios-locked-outline"></i>
-                            <h4>Secure System</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
-                                venenatis.</p>
-                        </div>
-                    </div><!-- END COL -->
-                </div>
-            </div>
-        </div> <!-- End row -->
-    </div> <!-- End container -->
-</section> <!-- End section -->
+    <!--
+    Start About Section
+    ==================================== -->
+    <section class="service-2 section">
+        <div class="container">
+            <div class="row justify-content-center">
 
-<!--
-Start About Section
-==================================== -->
-<section class="about-2 section" id="about">
-    <div class="container">
-        <div class="row justify-content-center">
-            <!-- section title -->
-            <div class="col-lg-6">
-                <div class="title text-center">
-                    <h2>We Are Bingo Agency</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam reprehenderit accusamus
-                        labore iusto,
-                        aut, eum itaque illo totam tempora eius.</p>
-                    <div class="border"></div>
-                </div>
-            </div>
-            <!-- /section title -->
-        </div>
-
-        <div class="row">
-
-            <div class="col-md-6 mb-4 mb-md-0">
-                <img loading="lazy" src="{{ asset('front/images/about/about-2.png') }}" class="img-fluid" alt="">
-            </div>
-            <div class="col-md-6">
-                <ul class="checklist">
-                    <li>Donec sed odio dui. Aenean eu leo quam. Pellentesque ornare sem laca quam venenatis
-                        vestibulum.
-                    </li>
-                    <li>Aenean quam. Pellentesque ornare sem laca quam venenatis vestibulum.</li>
-                    <li>Donec sed odio dui. Aenean eu leo quam. Pellentesque ornare sem laca quam venenatis
-                        vestibulum.
-                    </li>
-                    <li>Etiam porta sem multipage evint landing magna mollis euismod a pharetra augue.</li>
-                    <li>Aenean quam. Pellentesque ornare sem laca quam venenatis vestibulum.</li>
-                </ul>
-                <a href="about.html" class="btn btn-main mt-20">Learn More</a>
-            </div>
-        </div> <!-- End row -->
-    </div> <!-- End container -->
-</section> <!-- End section -->
-
-<!--
-Start Call To Action
-==================================== -->
-<section class="call-to-action section">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-6 col-lg-8 text-center">
-                <h2>Let's Create Something Together</h2>
-                <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicudin bibendum auctor, nisi elit consequat
-                    ipsum,
-                    nesagittis sem nid elit. Duis sed odio sitain elit.</p>
-                <a href="contact.html" class="btn btn-main">Contact Us</a>
-            </div>
-        </div> <!-- End row -->
-    </div> <!-- End container -->
-</section> <!-- End section -->
-
-<!--
-Start Counter Section
-==================================== -->
-<section class="counter-wrapper section-sm">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-6 col-lg-8 text-center">
-                <div class="title">
-                    <h2>Award-Winning Agency</h2>
-                    <p>Vestibulum nisl tortor, consectetur quis imperdiet bibendum, laoreet sed arcu. Sed condimentum
-                        iaculis ex, in faucibus lorem accumsan non. Donec mattis tincidunt metus. Morbi sed tortor a
-                        risus luctus dignissim.</p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <!-- first count item -->
-            <div class="col-md-3 col-sm-6 col-xs-6 text-center ">
-                <div class="counters-item">
-                    <i class="tf-ion-ios-alarm-outline"></i>
-                    <div>
-                        <span class="counter" data-count="150">0</span>
+                <div class="col-lg-6">
+                    <!-- section title -->
+                    <div class="title text-center">
+                        <h2>Welcome To Our Team !</h2>
+                        <div class="border"></div>
                     </div>
-                    <h3>Happy Clients</h3>
+                    <!-- /section title -->
                 </div>
             </div>
-            <!-- end first count item -->
-
-            <!-- second count item -->
-            <div class="col-md-3 col-sm-6 col-xs-6 text-center ">
-                <div class="counters-item">
-                    <i class="tf-ion-ios-analytics-outline"></i>
-                    <div>
-                        <span class="counter" data-count="130">0</span>
-                    </div>
-                    <h3>Projects completed</h3>
+            <div class="row">
+                <div class="col-md-6 text-center d-none d-md-block">
+                    <img loading="lazy" src="{{ asset('images/about/member.jpg') }}" class="img-fluid inline-block"
+                         alt="">
                 </div>
-            </div>
-            <!-- end second count item -->
-
-            <!-- third count item -->
-            <div class="col-md-3 col-sm-6 col-xs-6 text-center ">
-                <div class="counters-item">
-                    <i class="tf-ion-ios-compose-outline"></i>
-                    <div>
-                        <span class="counter" data-count="99">0</span>
-                    </div>
-                    <h3>Positive feedback</h3>
-
-                </div>
-            </div>
-            <!-- end third count item -->
-
-            <!-- fourth count item -->
-            <div class="col-md-3 col-sm-6 col-xs-6 text-center ">
-                <div class="counters-item kill-border">
-                    <i class="tf-ion-ios-bolt-outline"></i>
-                    <div>
-                        <span class="counter" data-count="250">0</span>
-                    </div>
-                    <h3>Cups of Coffee</h3>
-                </div>
-            </div>
-            <!-- end fourth count item -->
-        </div> <!-- end row -->
-    </div> <!-- end container -->
-</section> <!-- end section -->
-
-<!-- Start Testimonial
-=========================================== -->
-
-<section class="testimonial section" id="testimonial">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <!-- testimonial wrapper -->
-                <div class="testimonial-slider">
-                    <!-- testimonial single -->
-                    <div class="item text-center">
-                        <i class="tf-ion-chatbubbles"></i>
-                        <!-- client info -->
-                        <div class="client-details">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum nulla, soluta dolorum. Eos
-                                earum, magni asperiores, unde corporis labore, enim, voluptatum officiis voluptates
-                                alias natus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, officia.
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, quia?</p>
-                        </div>
-                        <!-- /client info -->
-                        <!-- client photo -->
-                        <div class="client-thumb">
-                            <img loading="lazy" src="{{ asset('front/images/client-logo/clients-1.jpg') }}"
-                                 class="img-fluid" alt="">
-                        </div>
-                        <div class="client-meta">
-                            <h3>William Martin</h3>
-                            <span>CEO , Company Name</span>
-                        </div>
-                        <!-- /client photo -->
-                    </div>
-                    <!-- /testimonial single -->
-
-                    <!-- testimonial single -->
-                    <div class="item text-center">
-                        <i class="tf-ion-chatbubbles"></i>
-                        <!-- client info -->
-                        <div class="client-details">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum nulla, soluta dolorum. Eos
-                                earum, magni asperiores, unde corporis labore, enim, voluptatum officiis voluptates
-                                alias natus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, officia.
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, quia?</p>
-                        </div>
-                        <!-- /client info -->
-                        <!-- client photo -->
-                        <div class="client-thumb">
-                            <img loading="lazy" src="{{ asset('front/images/client-logo/clients-2.jpg') }}"
-                                 class="img-fluid" alt="">
-                        </div>
-                        <div class="client-meta">
-                            <h3>Emma Harrison</h3>
-                            <span>CEO , Company Name</span>
-                        </div>
-                        <!-- /client photo -->
-                    </div>
-                    <!-- /testimonial single -->
-
-                    <!-- testimonial single -->
-                    <div class="item text-center">
-                        <i class="tf-ion-chatbubbles"></i>
-                        <!-- client info -->
-                        <div class="client-details">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum nulla, soluta dolorum. Eos
-                                earum, magni asperiores, unde corporis labore, enim, voluptatum officiis voluptates
-                                alias natus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, officia.
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, quia?</p>
-                        </div>
-                        <!-- /client info -->
-                        <!-- client photo -->
-                        <div class="client-thumb">
-                            <img loading="lazy" src="{{ asset('front/images/client-logo/clients-3.jpg') }}"
-                                 class="img-fluid" alt="">
-                        </div>
-                        <div class="client-meta">
-                            <h3>Alexander Lucas</h3>
-                            <span>CEO , Company Name</span>
-                        </div>
-                        <!-- /client photo -->
-                    </div>
-                    <!-- /testimonial single -->
-                </div>
-            </div>        <!-- end col lg 12 -->
-        </div>        <!-- End row -->
-    </div>       <!-- End container -->
-</section>    <!-- End Section -->
-
-<!--
-Start Blog Section
-=========================================== -->
-<section class="blog" id="blog">
-    <div class="container">
-        <div class="row justify-content-center">
-            <!-- section title -->
-            <div class="col-xl-6 col-lg-8">
-                <div class="title text-center ">
-                    <h2> Latest <span class="color">Posts</span></h2>
-                    <div class="border"></div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus facere accusamus, reprehenderit
-                        libero inventore nam.</p>
-                </div>
-            </div>
-            <!-- /section title -->
-        </div>
-
-        <div class="row">
-            <!-- single blog post -->
-            <article class="col-lg-4 col-md-6">
-                <div class="post-item">
-                    <div class="media-wrapper">
-                        <img loading="lazy" src="{{ asset('front/images/blog/post-1.jpg') }}"
-                             alt="amazing caves coverimage" class="img-fluid">
-                    </div>
-
-                    <div class="content">
-                        <h3><a href="single-post.html">Reasons to Smile</a></h3>
-                        <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf
-                            moon officia aute, non skateboard dolor brunch.</p>
-                        <a class="btn btn-main" href="single-post.html">Read more</a>
+                <div class="col-md-8">
+                    <div class="row text-center">
+                        <div class="col-md-6 col-sm-6">
+                            <div class="service-item">
+                                <i class="tf-ion-ios-alarm-outline"></i>
+                                <h4>Youssef Grissa</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
+                                    venenatis.</p>
+                            </div>
+                        </div><!-- END COL -->
+                        <div class="col-md-6 col-sm-6">
+                            <div class="service-item">
+                                <i class="tf-ion-ios-alarm-outline"></i>
+                                <h4>Saif Bouhamed</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
+                                    venenatis.</p>
+                            </div>
+                        </div><!-- END COL -->
+                        <div class="col-md-6 col-sm-6">
+                            <div class="service-item">
+                                <i class="tf-ion-ios-briefcase-outline"></i>
+                                <h4> Kamel hajsalah</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
+                                    venenatis.</p>
+                            </div>
+                        </div><!-- END COL -->
+                        <div class="col-md-6 col-sm-6">
+                            <div class="service-item">
+                                <i class="tf-ion-ios-email-outline"></i>
+                                <h4>Fayed Jaidi</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
+                                    venenatis.</p>
+                            </div>
+                        </div><!-- END COL -->
+                        <div class="col-md-6 col-sm-6">
+                            <div class="service-item">
+                                <i class="tf-ion-ios-locked-outline"></i>
+                                <h4>Feryel Djebbi</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
+                                    venenatis.</p>
+                            </div>
+                        </div><!-- END COL -->
+                        <div class="col-md-6 col-sm-6">
+                            <div class="service-item">
+                                <i class="tf-ion-ios-locked-outline"></i>
+                                <h4>Marouen Ben Mohamed</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae risus nec dui
+                                    venenatis.</p>
+                            </div>
+                        </div><!-- END COL -->
                     </div>
                 </div>
-            </article>
-            <!-- /single blog post -->
-
-            <!-- single blog post -->
-            <article class="col-lg-4 col-md-6">
-                <div class="post-item">
-                    <div class="media-wrapper">
-                        <img loading="lazy" src="{{ asset('front/images/blog/post-2.jpg') }}"
-                             alt="amazing caves coverimage" class="img-fluid">
-                    </div>
-
-                    <div class="content">
-                        <h3><a href="single-post.html">A Few Moments</a></h3>
-                        <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf
-                            moon officia aute, non skateboard dolor brunch.</p>
-                        <a class="btn btn-main" href="single-post.html">Read more</a>
-                    </div>
-                </div>
-            </article>
-            <!-- end single blog post -->
-
-            <!-- single blog post -->
-            <article class="col-lg-4 col-md-6">
-                <div class="post-item">
-                    <div class="media-wrapper">
-                        <img loading="lazy" src="{{ asset('front/images/blog/post-3.jpg') }}"
-                             alt="amazing caves coverimage" class="img-fluid">
-                    </div>
-
-                    <div class="content">
-                        <h3><a href="single-post.html">Hints for Life</a></h3>
-                        <p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf
-                            moon officia aute, non skateboard dolor brunch.</p>
-                        <a class="btn btn-main" href="single-post.html">Read more</a>
-                    </div>
-                </div>
-            </article>
-            <!-- end single blog post -->
-        </div> <!-- end row -->
-    </div> <!-- end container -->
-</section> <!-- end section -->
+            </div> <!-- End row -->
+        </div> <!-- End container -->
+    </section>
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Mon Panier</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" style="max-height: calc(100vh - 263px);
-    overflow-y: auto;">
-                <div class="alert alert-warning" role="alert"   id="toast_panier" style="display: none">Votre Panier est vide</div>
-                <table class="table table-responsive" id="table_panier">
-                    <thead></thead>
-                    <tbody id="body_panier">
-                    <tr>
-                        <th></th>
-                        <th>Nom produit</th>
-                        <th>Prix</th>
-                        <th>Quantité</th>
-                        <th>Prix Total</th>
-                    </tr>
+    <!-- Modal -->
 
-                    </tbody>
-                </table>
-                <div  >
-                <p id="prix_total" style="display:none; font-weight: bolder; margin-left: 36% ; color: red" > </p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 
-            </div>
-        </div>
-    </div>
-</div>
 
-</body>
+    </body>
 {% endblock %}
 
 
@@ -562,49 +276,19 @@ Start Blog Section
             <div class="container">
                 <div class="row justify-content-around">
                     <div class="col-lg-4 col-md-6 mb-5 mb-lg-0">
-                        <h3>about</h3>
-                        <p>Integer posuere erat a ante venenati dapibus posuere velit aliquet. Fusce dapibus, tellus
-                            cursus commodo, tortor mauris sed posuere.</p>
+                        <h3>About Our Site</h3>
+                        <p>Envi is a website that helps you maximize the positive impact in preserving the
+                            ecosystem...</p>
                     </div>
                     <!-- End of .col-sm-3 -->
 
-                    <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-                        <ul>
-                            <li>
-                                <h3>Our Services</h3>
-                            </li>
-                            <li><a href="service.html">Ui/Ux Design</a></li>
-                            <li><a href="service.html">Graphic Design</a></li>
-                            <li><a href="service.html">Web Design</a></li>
-                            <li><a href="service.html">Web Development</a></li>
-                        </ul>
-                    </div>
+
                     <!-- End of .col-sm-3 -->
 
-                    <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
-                        <ul>
-                            <li>
-                                <h3>Quick Links</h3>
-                            </li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="service.html">Services</a></li>
-                            <li><a href="blog.html">Blogs</a></li>
-                            <li><a href="404.html">404</a></li>
-                        </ul>
-                    </div>
+
                     <!-- End of .col-sm-3 -->
 
-                    <div class="col-lg-3 col-md-6">
-                        <ul>
-                            <li>
-                                <h3>Connect with us Socially</h3>
-                            </li>
-                            <li><a href="https://www.facebook.com/themefisher/">Facebook</a></li>
-                            <li><a href="https://www.twitter.com/themefisher/">Twitter</a></li>
-                            <li><a href="https://www.youtube.com/channel/UCx9qVW8VF0LmTi4OF2F8YdA">Youtube</a></li>
-                            <li><a href="https://www.github.com/themefisher/">Github</a></li>
-                        </ul>
-                    </div>
+
                     <!-- End of .col-sm-3 -->
 
                 </div>
@@ -620,6 +304,54 @@ Start Blog Section
 
 <!-- css et java -->
 {% block css %}
+    {% if app.user %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">My Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height: calc(100vh - 263px);
+    overflow-y: auto;">
+                    <div class="alert alert-warning" role="alert" id="toast_panier" style="display: none">Your basket is empty
+                    </div>
+                    <div class="alert alert-success" role="alert" id="toast_panier_payer_success" style="display: none">
+                        Your purchase is paid
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table " id="table_panier">
+                            <thead></thead>
+                            <tbody id="body_panier">
+                            <tr>
+                                <th></th>
+                                <th>Product name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total price</th>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <div>
+                        </div>
+                        <p id="prix_total" style="display:none; font-weight: bolder; margin-left: 36% ; color: red"></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="button-payer" onclick="payer({{ app.user.id }})">
+                        payer
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <!-- CSS
     ================================================== -->
     <!-- Themefisher Icon font -->
@@ -636,6 +368,7 @@ Start Blog Section
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="{{ asset('front/css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 {% endblock %}
 
 {% block java %}
@@ -651,15 +384,14 @@ Start Blog Section
     <script src="{{ asset('front/plugins/slick/slick.min.js') }}"></script>
     <!-- filter -->
     <script src="{{ asset('front/plugins/filterizr/jquery.filterizr.min.js') }}"></script>
+    <script src="{{ asset('front/js/scripts.js') }}"></script>
     <!-- Smooth Scroll js -->
     <script src="{{ asset('front/plugins/smooth-scroll/smooth-scroll.min.js') }}"></script>
     <!-- Google Map -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU"></script>
     <script src="{{ asset('front/plugins/google-map/gmap.js') }}"></script>
     <!-- Custom js -->
-    <script src="{{ asset('front/js/script.js') }}"></script>
-
-
+    <script src="{{ asset('front/js/script.js') }}"></script>µ
     <script>
         function afficherPanier(id_user) {
             var baseUrl = "{{ path('afficher_panier', { 'id_user': 'ID_USER_PLACEHOLDER'}) }}";
@@ -671,15 +403,19 @@ Start Blog Section
                 success: function (data) {
                     var tableau = document.querySelector('#table_panier');
                     var toast_panier = document.querySelector('#toast_panier');
+                    var prix_total_div = document.querySelector('#prix_total');
+                    prix_total_div.innerHTML = '';
+                    document.getElementById("toast_panier_payer_success").style.display = "none";
                     if (data == "Panier vide") {
 
-                        tableau.style.display='none'
-                        toast_panier.style.display='block'
+                        tableau.style.display = 'none'
+                        toast_panier.style.display = 'block'
+                        document.getElementById("button-payer").style.display = "none";
 
                     } else {
-
-                        tableau.style.display='block'
-                        toast_panier.style.display='none'
+                        document.getElementById("button-payer").style.display = "block";
+                        tableau.style.display = 'block'
+                        toast_panier.style.display = 'none'
                         const contenuepanier = JSON.parse(data);
                         const body_panier = document.getElementById("body_panier");
 
@@ -695,7 +431,7 @@ Start Blog Section
 
                             const td_nom = document.createElement("td");
                             const td_image = document.createElement("td");
-                            const image= document.createElement("img");
+                            const image = document.createElement("img");
 
                             var baseUrlImage = "{{ asset('images/produits/' ~ 'IMAGE_PLACEHOLDER') }}";
                             var finalUrlImage = baseUrlImage.replace('IMAGE_PLACEHOLDER', ligne_panier.idProduit.image);
@@ -708,13 +444,12 @@ Start Blog Section
                             tr.className = "tr_class"
 
 
-
                             td_quantite.append(ligne_panier.quantite)
 
                             td_nom.append(ligne_panier.idProduit.nomProduit)
                             td_prix.append(ligne_panier.idProduit.prix + ' DT')
                             prix_Total_panier += ligne_panier.idProduit.prix * ligne_panier.quantite
-                            td_prix_total.append((ligne_panier.idProduit.prix * ligne_panier.quantite ) + ' DT')
+                            td_prix_total.append((ligne_panier.idProduit.prix * ligne_panier.quantite) + ' DT')
 
 
                             td_image.appendChild(image)
@@ -728,9 +463,8 @@ Start Blog Section
 
                         }
 
-                        var prix_total_div = document.querySelector('#prix_total');
-                        prix_total_div.innerHTML='';
-                        prix_total_div.append("Prix Total :" +prix_Total_panier + ' DT')
+                        prix_total_div.innerHTML = '';
+                        prix_total_div.append("Total price :" + prix_Total_panier + ' DT')
                         prix_total_div.style.display = 'block'
                     }
                 },
@@ -739,13 +473,26 @@ Start Blog Section
                 }
             })
         }
+
+        function payer(id_user) {
+            var baseUrl = "{{ path('payer_panier', {'id_user': 'ID_USER_PLACEHOLDER'}) }}";
+            var finalUrl = baseUrl.replace('ID_USER_PLACEHOLDER', id_user);
+
+            $.ajax({
+                url: finalUrl,
+                type: 'GET',
+                success: function (data) {
+
+
+                    document.getElementById("toast_panier_payer_success").style.display = "block";
+
+                },
+                error: function (xhr, status, error) {
+
+                }
+            })
+        }
     </script>
     </html>
-{% endblock %}
+{% endblock %} 
 
-
-
-{% block javascript %}
-
-
-{% endblock %}

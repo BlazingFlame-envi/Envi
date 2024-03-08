@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Repository;
-
 use App\Entity\Equipement;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+
 
 /**
  * @extends ServiceEntityRepository<Equipement>
@@ -21,6 +21,34 @@ class EquipementRepository extends ServiceEntityRepository
         parent::__construct($registry, Equipement::class);
     }
 
+
+
+
+      public function getStudentOrdredByName()
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.nom_eq', 'ASC') // Assuming 'nom_eq' is the name field in the Materiel entity
+            ->getQuery()
+            ->getResult();
+    }
+    public function getStudentOrdredByrpix()
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.prix_eq', 'ASC') // Assuming 'nom_eq' is the name field in the Materiel entity
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getEntrepriseByUser($user)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.user = :user')
+            ->setParameter('user', $user) 
+            ->getQuery()
+            ->getResult();
+    }
+
+    
 //    /**
 //     * @return Equipement[] Returns an array of Equipement objects
 //     */

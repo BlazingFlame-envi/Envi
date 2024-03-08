@@ -15,8 +15,10 @@ class Produit
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank]
+    #[Assert\Positive]
     #[ORM\Column]
-    private ?float $prix = 0;
+    private ?float $prix = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nom_produit = null;

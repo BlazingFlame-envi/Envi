@@ -22,6 +22,7 @@ class ProduitController extends AbstractController
     #[Route('/listProduit', name: 'list_produit')]
     public function index(ProduitRepository $produitRepository): Response
     {
+
         $all_produit=$produitRepository->findAll();
 
         return $this->render('back/Shop/produit_list.html.twig', [
@@ -93,8 +94,18 @@ class ProduitController extends AbstractController
  //  Front Office
 
     #[Route('/shop', name: 'shop')]
-    public function indexFront(ProduitRepository $produitRepository): Response
+    public function indexFront(Request $request ,ProduitRepository $produitRepository): Response
     {
+
+        if($request->query->get('order')){
+            $all_produit=$produitRepository->findAllByOrderPrice($request->query->get('order'));
+
+            return $this->render('front/Shop/shop.html.twig', [
+                'controller_name' => 'ProduitController',
+                'list_produit' => $all_produit,
+            ]);
+        }
+
         $all_produit=$produitRepository->findAll();
 
         return $this->render('front/Shop/shop.html.twig', [

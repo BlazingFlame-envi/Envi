@@ -1,4 +1,4 @@
-{% extends '../../homeback.html.twig' %}
+{% extends 'homeback.html.twig' %}
 
 {% block body %}
 
@@ -22,7 +22,7 @@
 <div class="col-sm-6 col-md-4">
 {{form_start(f,{'attr':{'novalidate':'novalidate'}}) }}
 {{form_row(f.nom_e, {'attr': {'class': 'form-control mb-3'}}) }}
-{{form_errors(f.nom_e)}}
+
     </div>
 
 <div class="col-sm-6 col-md-4">
@@ -32,12 +32,17 @@
 <br>
 <div class="col-sm-6 col-md-4">
 {{form_row(f.tel, {'attr': {'class': 'form-control mb-3'}}) }}
-{{form_errors(f.tel)}}
+
  </div>
 <br>
 <div class="col-sm-6 col-md-4">
 {{form_row(f.mail_e, {'attr': {'class': 'form-control mb-3'}}) }}
-{{form_errors(f.mail_e)}}
+
+{{form_label(f.imageFile,"Image", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.imageFile, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.imageFile, {'attr': {'class': 'form-control'}})}}
+<br>
+
 </div>
 <br>
 

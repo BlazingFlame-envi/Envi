@@ -10,15 +10,28 @@
                 <div class="col-lg-6">
                     <!-- section title -->
                     <div class="title text-center">
-                        <h2>Notre Shop</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Lorem ipsum dolor sit amet,
-                            consectetur
-                            adipisicing elit. Voluptates, earum.
+                        <h2>Our Shop</h2>
+                        <p>Explore our online shop, your go-to destination for sustainable products, high-quality
+                            animal-derived items,
+                            and innovative solutions for street cleaning.
+                            Join us in our commitment to a cleaner and more environmentally respectful future.
                         </p>
                         <div class="alert alert-success" role="alert" id="toast-succes" style="display: none">
                             Le produit a été ajouté avec succes
                         </div>
                         <div class="border"></div>
+                        <div class="row">
+                            <div class="col-md-10">
+                                <input type="text" id="search" placeholder="Search by name..." class="form-control">
+
+                            </div>
+                            <div class="col-md-2" style=" margin-top: -13px;">
+                                sort DT
+                              <a href="{{ path('shop',{'order': 'ASC'}) }}"> <i class="fa-solid fa-arrow-up"   style="font-size: 24PX;"></i></a>
+                                <a href="{{ path('shop', {'order': 'DESC'})  }}"> <i class="fa-solid fa-arrow-down"  style="font-size: 24PX;"></i></a>
+                            </div>
+
+                        </div>
                     </div>
                     <!-- /section title -->
                 </div>
@@ -29,34 +42,37 @@
                     <div class="row text-center">
 
                         {% for produit in list_produit %}
-                            <div class="col-md-4 col-sm-4">
+                            <div class="col-md-4 col-sm-4 produit-card">
                                 <div class="service-item">
                                     <img src="{{ asset('images/produits/' ~ produit.getImage()) }}" style=" width:150px"
                                          alt="Image du produit">
                                     <h4>{{ produit.getNomProduit() | upper }}</h4>
                                     {% if produit.getQuantite() == 1 %}
-                                        <p style="color: red"><b>Dernier article </b></p>
+                                        <p style="color: red"><b>Latest article </b></p>
                                     {% elseif produit.getQuantite() == 0 %}
-                                        <p style="color: orange"><b>En rupture de stock </b></p>
+                                        <p style="color: orange"><b>Out of stock </b></p>
                                     {% else %}
-                                        <p style="color: green"><b>En Stock </b></p>
+                                        <p style="color: green"><b>In stock </b></p>
                                     {% endif %}
                                     <p>Prix : {{ produit.getPrix() }} DT</p>
                                     <p>Categorie : {{ produit.getIdCategorie().getNomCategorie() }}</p>
                                     {% if app.user %}
-                                        {% if   produit.getQuantite() > 0 %}
+                                        {% if   produit.getQuantite() > 0 and app.user.role != 'agence' %}
+
                                             <p>
                                                 <button class="btn btn-success"
                                                         onclick="ajouterProduit({{ produit.getId() }} , {{ app.user.id }})">
-                                                    ajouter au panier
+                                                    Add to Cart
                                                 </button>
                                             </p>
                                         {% endif %}
                                     {% else %}
-                                        {% if   produit.getQuantite() > 0 %}
+
+                                        {% if   produit.getQuantite() > 0  and app.user.role != 'agence'%}
                                             <p><a href="{{ path('app_login') }}">
-                                                    <button class="btn btn-success"> ajouter au panier</button></p></a>
+                                                    <button class="btn btn-success"> Add to Cart</button></p></a>
                                         {% endif %}
+
                                     {% endif %}
                                 </div>
                             </div><!-- END COL -->
@@ -64,73 +80,146 @@
 
 
                     </div>
+
                 </div>
             </div> <!-- End row -->
+            <div class="row">
+                <div class="col-md-12 text-center" id="pagination-container">
+                    <!-- Pagination links will be dynamically added here -->
+                </div>
+            </div> <!-- End Pagination -->
         </div> <!-- End container -->
     </section> <!-- End section -->
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Mon Panier</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="max-height: calc(100vh - 263px);
-    overflow-y: auto;">
-                    <div class="alert alert-warning" role="alert"   id="toast_panier" style="display: none">Votre Panier est vide</div>
-                    <table class="table table-responsive" id="table_panier" >
-                        <thead></thead>
-                        <tbody id="body_panier">
-                        <tr>
-                            <th></th>
-                            <th>Nom produit</th>
-                            <th>Prix</th>
-                            <th>Quantité</th>
-                            <th>Prix Total</th>
-                        </tr>
+    {#    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" #}
+    {#         aria-hidden="true"> #}
+    {#        <div class="modal-dialog modal-lg" role="document"> #}
+    {#            <div class="modal-content"> #}
+    {#                <div class="modal-header"> #}
+    {#                    <h5 class="modal-title" id="exampleModalLabel">Mon Panier</h5> #}
+    {#                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"> #}
+    {#                        <span aria-hidden="true">&times;</span> #}
+    {#                    </button> #}
+    {#                </div> #}
+    {#                <div class="modal-body" style="max-height: calc(100vh - 263px); #}
+    {#    overflow-y: auto;"> #}
+    {#                    <div class="alert alert-warning" role="alert"   id="toast_panier" style="display: none">Votre Panier est vide</div> #}
+    {#                    <div class="alert alert-success" role="alert"   id="toast_panier_payer_success" style="display: none">Votre achat est payé</div> #}
+    {#                    <div class="table-responsive"> #}
+    {#                    <table class="table " id="table_panier" > #}
+    {#                        <thead></thead> #}
+    {#                        <tbody id="body_panier"> #}
+    {#                        <tr> #}
+    {#                            <th></th> #}
+    {#                            <th>Nom produit</th> #}
+    {#                            <th>Prix</th> #}
+    {#                            <th>Quantité</th> #}
+    {#                            <th>Prix Total</th> #}
+    {#                        </tr> #}
 
-                        </tbody>
-                    </table>
-                    <div  >
-                        <p id="prix_total" style="display:none; font-weight: bolder; margin-left: 36% ; color: red" > </p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+    {#                        </tbody> #}
+    {#                    </table> #}
+    {#                    <div  > #}
+    {#                    </div> #}
+    {#                        <p id="prix_total" style="display:none; font-weight: bolder; margin-left: 36% ; color: red" > </p> #}
+    {#                    </div> #}
+    {#                </div> #}
+    {#                <div class="modal-footer"> #}
+    {#                    <button type="button" class="btn btn-success"  id="button-payer" onclick="payer({{ app.user.id }})">payer</button> #}
+    {#                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button> #}
 
-                </div>
-            </div>
-        </div>
-    </div>
+    {#                </div> #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </div> #}
+    <!-- JavaScript for Pagination -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const itemsPerPage = 6; // Change this value as needed
+            const partners = document.querySelectorAll('.produit-card');
+            const numPages = Math.ceil(partners.length / itemsPerPage);
 
+            function paginate(page) {
+                partners.forEach((partner, index) => {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        partner.style.display = 'block';
+                    } else {
+                        partner.style.display = 'none';
+                    }
+                });
+            }
+
+            function createPaginationLinks() {
+                const paginationContainer = document.getElementById('pagination-container');
+                for (let i = 1; i <= numPages; i++) {
+                    const link = document.createElement('a');
+                    link.href = '';
+                    link.textContent = i;
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        paginate(i);
+                    });
+                    paginationContainer.appendChild(link);
+                    paginationContainer.appendChild(document.createTextNode(' '));
+                }
+            }
+
+            createPaginationLinks();
+            paginate(1); // Show the first page initially
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#search').keyup(function () {
+                searchItems($(this).val());
+            });
+        });
+
+        function searchItems(value) {
+            $('.produit-card').each(function () {
+                var found = false;
+                $(this).find('h4').each(function () {
+                    if ($(this).text().toLowerCase().includes(value.toLowerCase())) {
+                        found = true;
+                        return false;
+                    }
+                });
+                if (found || value === '') {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    </script>
+    <script>
+        function ajouterProduit(id_produit, id_user) {
+            var baseUrl = "{{ path('ajouter_panier', {'id_produit': 'ID_PRODUIT_PLACEHOLDER', 'id_user': 'ID_USER_PLACEHOLDER'}) }}";
+            var finalUrl = baseUrl.replace('ID_PRODUIT_PLACEHOLDER', id_produit).replace('ID_USER_PLACEHOLDER', id_user);
+
+            $.ajax({
+                url: finalUrl,
+                type: 'GET',
+                success: function (data) {
+                    const toast = document.getElementById('toast-succes');
+                    toast.style = 'display: block';
+                    setTimeout(() => {
+                        toast.style = 'display: none';
+                    }, 3000)
+
+                },
+                error: function (xhr, status, error) {
+
+                }
+            })
+        }
+    </script>
 
 {% endblock %}
 {% block javascript %}
-<script>
-    function ajouterProduit(id_produit , id_user) {
-    var baseUrl = "{{ path('ajouter_panier', {'id_produit': 'ID_PRODUIT_PLACEHOLDER', 'id_user': 'ID_USER_PLACEHOLDER'}) }}";
-    var finalUrl = baseUrl.replace('ID_PRODUIT_PLACEHOLDER', id_produit).replace('ID_USER_PLACEHOLDER', id_user);
 
-    $.ajax({
-        url: finalUrl,
-        type: 'GET',
-        success: function (data) {
-            const toast = document.getElementById('toast-succes');
-            toast.style = 'display: block';
-            setTimeout(()=> {
-                toast.style = 'display: none';
-            },3000)
-
-        },
-        error: function (xhr, status, error) {
-
-        }
-    })
-}
-</script>
 {% endblock %}

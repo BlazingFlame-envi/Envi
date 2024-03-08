@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Succes;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Entity\User;
 
 /**
  * @extends ServiceEntityRepository<Succes>
@@ -45,4 +46,14 @@ class SuccesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function getEntrepriseByUser($user)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.user = :user')
+            ->setParameter('user', $user) 
+            ->getQuery()
+            ->getResult();
+    }
+
 }

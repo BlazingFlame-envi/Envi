@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\OffreRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: OffreRepository::class)]
 class Offre
@@ -27,6 +28,27 @@ class Offre
     #[ORM\ManyToOne(inversedBy: 'offres')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Entreprise $entreprise = null;
+
+
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    #[ORM\JoinColumn(name:"id_user",nullable: false)]
+    private ?User $user = null;
+
+
+
+    
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 
     public function getId(): ?int
     {

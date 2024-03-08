@@ -87,8 +87,9 @@
 						<table class="table table-xs mb-0">
 						<tr>
         <th>ID</th>
-        <th>Nom</th>
+        <th>Name</th>
 		<th>Email</th>
+<th> Image </th>
         <th>Action</th>
     </tr>
 						{% for partenaire in partenaires %}
@@ -106,6 +107,7 @@
 						        </td>
 
         </td>
+        <td> <img src="{{ asset('images/produits/' ~ partenaire.getImage()) }}" alt="" style="width:150px"> </td>
         <td>
             <a href="{{ path('app_partenaire_delete', {id: partenaire.getId()}) }}" class="btn btn-danger">Delete</a>
             <a href="{{ path('app_part_fedit', {id: partenaire.getId()}) }}" class="btn btn-success">Edit</a>

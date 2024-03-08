@@ -1,0 +1,179 @@
+{% extends 'homeback.html.twig' %}
+{% block body %}
+{% for flashMessage in app.flashes('success') %}
+    <!-- Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Félicitations!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success" role="alert">
+                        {{ flashMessage }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+<link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+     <style>
+        .sortable {
+            cursor: pointer;
+        }
+           </style>
+    <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+    <script src="{{ asset( 'assetsback/js/jquery.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
+    <div class="content-body">
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-lg-12 text-center" id="pagination-container">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="active-member">
+                                <div class="table-responsive">
+                                    <div class="input-group mb-3" id="partner-list">
+                                        <span class="input-group-text bg-transparent border-0" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+                                        <input type="search" class="form-control" placeholder="Chercher" id="search">
+                                    </div>
+                                    <table class="table table-xs mb-0" id="tableac">
+                                        <thead>
+                                            <tr>
+                                            
+                                                <th class="sortable">Name</th>
+                                                <th class="sortable">Type</th>
+                                                <th class="sortable">Number of Participants</th>
+                                                <th>Emplacement</th>
+                                                <th>Date</th>
+                                                <th>Succes</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for tache in taches %}
+                                            <tr>
+                      
+                                
+                                <td>{{ tache.nomT | upper }}</td>
+                                <td> {{ tache.typeT }} </td>
+                                <td>{{ tache.nbpartT }} </td>
+                                <td> {{ tache.emplT  }}</td> 
+                                <td>{{ tache.dateT ? tache.dateT|date('Y-m-d') : '' }}</td>
+                                <td>{{ tache.succes }} </td>
+                                <td> <a href="{{ path('app_taches_edit_back', {'id': tache.id}) }}"><i class="fa">&#x270E;</i></a></td>
+                               <td>  <a href="{{ path('app_taches_delete_back',{'id': tache.id}) }}"><i class="fa">&#xf014;</i></a></td>
+                               
+
+                                           </tr>
+                        {% endfor %}
+                                         </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Pagination Container -->
+    <div class="row">
+        <div class="col-md-12 text-center" id="pagination-container">
+            <!-- Pagination links will be dynamically added here -->
+        </div>
+    </div>
+    <!-- End Pagination -->
+
+    <script>
+        $(document).ready(function() {
+            $('#search').keyup(function() {
+                search_table($(this).val());
+            });
+
+            function search_table(value) {
+                $('#tableac tbody tr').each(function() {
+                    var found = false;
+                    $(this).find('td:nth-child(2), td:nth-child(3)').each(function() {
+                        if ($(this).text().toLowerCase().includes(value.toLowerCase())) {
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if (found) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+
+            $('#tableac th').click(function() {
+                var table = $(this).parents('table').eq(0)
+                var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                if (!this.asc) {
+                    rows = rows.reverse()
+                }
+                for (var i = 0; i < rows.length; i++) {
+                    table.append(rows[i])
+                }
+            });
+
+            function comparer(index) {
+                return function(a, b) {
+                    var valA = getCellValue(a, index),
+                        valB = getCellValue(b, index)
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+                }
+            }
+
+            function getCellValue(row, index) {
+                return $(row).children('td').eq(index).text()
+            }
+
+            const itemsPerPage = 3;
+            const partners = $('#tableac tbody tr');
+            const numPages = Math.ceil(partners.length / itemsPerPage);
+
+            function paginate(page) {
+                partners.hide().slice((page - 1) * itemsPerPage, page * itemsPerPage).show();
+            }
+
+            function createPaginationLinks() {
+                const paginationContainer = $('#pagination-container');
+                for (let i = 1; i <= numPages; i++) {
+                    const link = $('<a>', {
+                        href: '#',
+                        text: i,
+                        click: function(event) {
+                            event.preventDefault();
+                            paginate(i);
+                        }
+                    });
+                    paginationContainer.append(link).append(' ');
+                }
+            }
+
+            createPaginationLinks();
+            paginate(1);
+        });
+    </script>
+    <script>
+    // Afficher le modal dès que la page est chargée
+    $(document).ready(function() {
+        $('#successModal').modal('show');
+    });
+</script>
+{% endblock %}
+
+								

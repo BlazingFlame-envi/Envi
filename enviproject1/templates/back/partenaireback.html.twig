@@ -1,63 +1,151 @@
-
-
 {% extends 'homeback.html.twig' %}
+
 {% block body %}
-        <div class="content-body">
-            <div class="container-fluid mt-3">
-                <div class="row">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="active-member">
-                                    <div class="table-responsive">
-                                        <table class="table table-xs mb-0">
-                                            <thead>
-                                                <tr>
-                                                        <th>ID</th>
-        <th>Nom</th>
-		<th>Email</th>
-        <th>Telephone</th>
-        <th>Emplacement</th>
-        <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                              {% for partenaire in partenaires %}
-                                            <tbody>
+    <style>
+        .sortable {
+            cursor: pointer;
+        }
+    </style>
+    <div class="content-body">
+        <div class="container-fluid mt-3">
+            <div class="row">
+                <div class="col-lg-12">
+                   
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <input type="text" id="search" placeholder="Rechercher par nom..." class="form-control">
+                            <div class="active-member">
+                                <div class="table-responsive">
+                                    <table id="tableac" class="table table-xs mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th class="sortable">ID</th>
+                                                <th class="sortable">Nom</th>
+                                                <th>Email</th>
+                                                <th>Telephone</th>
+                                                <th>Emplacement</th>
+                                                <th>Image</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for partenaire in partenaires %}
                                                 <tr>
                                                     <td>{{ partenaire.getId() }}</td>
                                                     <td>{{ partenaire.getNomE() | upper }}</td>
-                                                 
+                                                    <td>{{ partenaire.getMailE() }}</td>
+                                                    <td>{{ partenaire.getTel() }}</td>
+                                                    <td>{{ partenaire.getEmplacement() }}</td>
+                                                    <td><img src="{{ asset('images/produits/' ~ partenaire.getImage()) }}" alt="" style="width:150px"></td>
                                                     <td>
-                                                       {{ partenaire.getMailE() }}
+                                                        <a href="{{ path('app_partback_fedit', {id: partenaire.getId()}) }}"><i class="fa">&#x270E;</i></a>
+                                                        <a href="{{ path('app_partenaireback_delete', {id: partenaire.getId()}) }}"><i class="fa">&#xf014;</i></a>
                                                     </td>
-                                                    <td> {{ partenaire.getTel() }}</td>
-                                                    <td>
-                                                        {{ partenaire.getEmplacement() }}
-                                                    </td>
-                                                  
-                                                   <td>
-                                                   <a href="{{ path('app_partback_fedit', {id: partenaire.getId()}) }}"><i class="fa">&#x270E;</i></a>
-                                                   <a href="{{ path('app_partenaireback_delete', {id: partenaire.getId()}) }}"><i class="fa">&#xf014;</i></a>
-                                                   </td>
-                                                   
-                                            </tbody>
-                                              {% endfor %}
-                                        </table>
-                                    </div>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
-
-               
-
-                
-
-               
             </div>
-            <!-- #/ container -->
         </div>
-        </div>
-        {% endblock %}
+    </div>
+
+    <div class="pagination-container text-center">
+        <!-- Pagination links will be dynamically added here -->
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#search').keyup(function () {
+                search_table($(this).val());
+            });
+
+            function search_table(value) {
+                $('#tableac tbody tr').each(function () {
+                    var found = false;
+                    $(this).find('td:nth-child(2)').each(function () {
+                        if ($(this).text().toLowerCase().includes(value.toLowerCase())) {
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if (found) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+
+            $('#tableac th:nth-child(2)').click(function () {
+                var table = $(this).parents('table').eq(0)
+                var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                if (!this.asc) { rows = rows.reverse() }
+                for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+            })
+
+            $('#tableac th:nth-child(1)').click(function () {
+                var table = $(this).parents('table').eq(0)
+                var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                if (!this.asc) { rows = rows.reverse() }
+                for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+            })
+
+            function comparer(index) {
+                return function (a, b) {
+                    var valA = getCellValue(a, index), valB = getCellValue(b, index)
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+                }
+            }
+
+            function getCellValue(row, index) { return $(row).children('td').eq(index).text() }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const itemsPerPage = 3; // Change this value as needed
+            const partners = document.querySelectorAll('#tableac tbody tr');
+            const numPages = Math.ceil(partners.length / itemsPerPage);
+
+            function paginate(page) {
+                partners.forEach((partner, index) => {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        partner.style.display = 'table-row';
+                    } else {
+                        partner.style.display = 'none';
+                    }
+                });
+            }
+
+            function createPaginationLinks() {
+                const paginationContainer = document.querySelector('.pagination-container');
+                for (let i = 1; i <= numPages; i++) {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = i;
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        paginate(i);
+                    });
+                    paginationContainer.appendChild(link);
+                    paginationContainer.appendChild(document.createTextNode(' '));
+                }
+            }
+
+            createPaginationLinks();
+            paginate(1); // Show the first page initially
+        });
+    </script>
+{% endblock %}

@@ -20,6 +20,14 @@ class ProduitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllByOrderPrice($order)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.prix', $order)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Produit::class);

@@ -1,8 +1,6 @@
 {% extends 'basefront.html.twig' %}
 {% block head %}
 <!DOCTYPE html>
-
-
 <html lang="en">
 <head>
 
@@ -22,12 +20,37 @@
 
 </head>
 {% endblock %}
+{% block image %}
+<body id="body">
 
-
-
-
+<div class="hero-slider">
+	<div class="slider-item th-fullpage hero-area" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">Welcome {{app.user.getNom()}}</h1>
+					<a data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".8" class="btn btn-success"
+						href="service.html">About Us</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="slider-item th-fullpage hero-area" style="background-image: url({{ asset('front/images/slider/envi.jpg)')}};">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h1 data-duration-in=".3" data-animation-in="fadeInUp" data-delay-in=".1">{{app.user.getRole()}}</h1>
+					<p data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".5">Create just what you need
+						for your Perfect Website. Choose from a wide range
+					<a data-duration-in=".3" data-animation-in="fadeInDown" data-delay-in=".8" class="btn btn-success"
+						href="service.html">Explore Us</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
 {% block body %}
-{{app.user.getNom()}}
 {% endblock %}
 {% block header %}
 <header class="navigation fixed-top">
@@ -73,7 +96,16 @@
             <a class="nav-link" href="service.html">Services</a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="portfolio.html">Portfolio</a>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#!" id="navbarDropdown03" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">Evenements<i class="tf-ion-chevron-down"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown02">
+              <li><a class="dropdown-item" href="{{ path('app_taches_index') }}">Afficher Taches</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_taches_favorites') }}">Taches Favorites</a></li>
+              <li><a class="dropdown-item" href="{{ path('app_succes_index') }}">Afficher Succes</a></li>
+            </ul>
+          </li>
           </li>
           <li class="nav-item ">
             <a class="nav-link" href="team.html">Team</a>
@@ -90,7 +122,7 @@
              Account <i class="tf-ion-chevron-down"></i>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown02">
-              <li><a class="dropdown-item" href="{{ path('app_user_fedit', {id: app.user.id}) }}">Account settings</a></li>
+              <li><a class="dropdown-item" href="{{ path('user_show_details', {id: app.user.id}) }}">Account settings</a></li>
               <li><a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a></li>
               
             </ul>

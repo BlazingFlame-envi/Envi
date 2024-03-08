@@ -21,6 +21,30 @@ class FournisseurRepository extends ServiceEntityRepository
         parent::__construct($registry, Fournisseur::class);
     }
 
+
+
+
+    
+      public function getFournisseurby()
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.nom_fr', 'ASC') // Assuming 'nom_eq' is the name field in the Materiel entity
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+    
+      public function getFournisseurbyage()
+    {
+        return $this->createQueryBuilder('m')
+            ->orderBy('m.age_fr', 'ASC') // Assuming 'nom_eq' is the name field in the Materiel entity
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Fournisseur[] Returns an array of Fournisseur objects
 //     */
@@ -45,4 +69,15 @@ class FournisseurRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+public function getEntrepriseByUser($user)
+{
+    return $this->createQueryBuilder('e')
+        ->where('e.user = :user')
+        ->setParameter('user', $user) 
+        ->getQuery()
+        ->getResult();
+}
+
 }

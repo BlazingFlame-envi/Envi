@@ -1,0 +1,108 @@
+{% extends 'basefront.html.twig' %}
+
+
+
+{% block body %}
+
+<section class="service-2 section">
+        <div class="container">
+            <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="title text-center">
+                    <h2>Fournisseurs Disponibles</h2>
+                    <p><a href="{{ path('app_fournisseur_fnew') }}" class="btn btn-success">Add Fournisseur</a></p>
+                    <br>
+                     <a href="{{ path('app_fournisseur_tri') }}" class="btn btn-success"> Fournisseurs Ordered </a>
+                    <br>
+                     <br>
+                    <input type="text" id="fournisseur-search" placeholder="Rechercher par nom..." class="form-control">  
+                    <div class="border"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="fournisseur-list">
+            <div class="col-md-12">
+                <div class="row text-center">
+                    {% for author in authors %}
+                    <div class="col-md-4 col-sm-4 fournisseur-item">
+                        <div class="service-item">
+                            <!-- Assuming you have an image for each fournisseur, replace 'placeholder-image.png' with the actual image path variable -->
+                            <img src="{{ asset('front/images/slider/marteau.jpg') }}"  style="width:150px" alt="Fournisseur Image">
+                            <h4>{{ author.getNomFr() | upper }}</h4>
+                            <p>Type: {{ author.getPrenomFr() }}</p>
+                            <p>Disponibilité: {{ author.getAgeFr() }}</p>
+                            <p>Quantité: {{ author.getAdressFr() }}</p>
+                            <p>
+                                <a href="{{ path('app_fournisseur_fedit', {id: author.id}) }}" class="btn btn-success">Edit</a>
+                                <a href="{{ path('app_fournisseur_delete', {id: author.id}) }}" class="btn btn-danger">Delete</a>
+                            </p>
+                        </div>
+                    </div><!-- END COL -->
+                    {% else %}
+                        <p>No fournisseur details available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div> <!-- End row -->
+      </div> <!-- End row -->
+    </div> <!-- End container -->
+</section> <!-- End section -->
+
+<!-- JavaScript for Search -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#fournisseur-search').keyup(function(){
+            searchFournisseur($(this).val());
+        });
+    });
+
+    function searchFournisseur(value){
+        $('.fournisseur-item').each(function(){
+            var found = false;
+            $(this).find('h4').each(function(){
+                if($(this).text().toLowerCase().includes(value.toLowerCase())){
+                    found = true;
+                    return false;
+                }
+            });
+            if(found || value === ''){
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+</script>
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    // Event listener for your sort button
+    $('#sort-fournisseur').click(function(){
+        sortFournisseur();
+    });
+});
+
+function sortFournisseur(){
+    var itemsArray = $('.fournisseur-item').toArray();
+    
+    // Sort the items based on the text of the h4 tag
+    itemsArray.sort(function(a, b){
+        var textA = $(a).find('h4').text().toUpperCase(); // Assuming you want to sort by the text inside <h4>
+        var textB = $(b).find('h4').text().toUpperCase();
+        return textA.localeCompare(textB); // For ascending order
+        // Use return textB.localeCompare(textA); for descending order
+    });
+    
+    // Re-append items to their container in sorted order
+    $.each(itemsArray, function(index, item){
+        $(item).parent().append(item);
+    });
+}
+</script>
+
+
+
+{% endblock %}

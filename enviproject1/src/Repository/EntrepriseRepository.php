@@ -21,6 +21,26 @@ class EntrepriseRepository extends ServiceEntityRepository
         parent::__construct($registry, Entreprise::class);
     }
 
+
+    public function rechercherParNom($searchTerm)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.nom_e LIKE :searchTerm')
+            ->setParameter('searchTerm', $searchTerm . '%') // Vous pouvez modifier ce comportement selon vos besoins
+            ->orderBy('e.nom_e', 'ASC') // Optionnel: tri par nom de l'entreprise
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getEntrepriseByUser($user)
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.user = :user')
+            ->setParameter('user', $user) 
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Entreprise[] Returns an array of Entreprise objects
 //     */

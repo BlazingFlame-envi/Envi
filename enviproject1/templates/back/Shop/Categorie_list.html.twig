@@ -11,9 +11,11 @@
                             <a href="{{ path('ajouter_Categorie') }}">
                                 <button class="btn btn-primary btn-lg" style=" display: block;
             margin-left: auto;
-            margin-right: 0;"> Ajouter Categorie
+            margin-right: 0;"> Add Category
                                 </button>
                             </a>
+                            <br>
+                            <input type="search" class="form-control" placeholder="Search ..." id="search" value="">
                             <div class="active-member">
                                 {% if erreur %}
                                     <div class="alert alert-danger">
@@ -21,11 +23,11 @@
                                     </div>
                                 {% endif %}
                                 <div class="table-responsive">
-                                    <table class="table table-xs mb-0">
+                                    <table class="table table-xs mb-0" id="tableac">
                                         <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Nom_Categorie</th>
+                                            <th>Category Name</th>
                                         </tr>
                                         </thead>
                                         {% for Categorie in list_Categorie %}
@@ -42,6 +44,9 @@
                                             </tbody>
                                         {% endfor %}
                                     </table>
+                                    <div class="pagination-container text-center">
+                                        <!-- Pagination links will be dynamically added here -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -53,4 +58,106 @@
             <!-- #/ container -->
         </div>
     </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#search').keyup(function () {
+                search_table($(this).val());
+            });
+
+            function search_table(value) {
+                $('#tableac tbody tr').each(function () {
+
+                    var found = false;
+                    $(this).find('td:nth-child(2)').each(function () {
+                        if ($(this).text().toLowerCase().includes(value.toLowerCase())) {
+                            found = true;
+                            return false;
+                        }
+                    });
+
+
+                    if (found) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+
+            $('#tableac th:nth-child(2)').click(function () {
+                var table = $(this).parents('table').eq(0)
+                var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                if (!this.asc) {
+                    rows = rows.reverse()
+                }
+                for (var i = 0; i < rows.length; i++) {
+                    table.append(rows[i])
+                }
+            })
+
+            $('#tableac th:nth-child(1)').click(function () {
+                var table = $(this).parents('table').eq(0)
+                var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+                this.asc = !this.asc
+                if (!this.asc) {
+                    rows = rows.reverse()
+                }
+                for (var i = 0; i < rows.length; i++) {
+                    table.append(rows[i])
+                }
+            })
+
+            function comparer(index) {
+                return function (a, b) {
+                    var valA = getCellValue(a, index),
+                        valB = getCellValue(b, index)
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+                }
+            }
+
+            function getCellValue(row, index) {
+                return $(row).children('td').eq(index).text()
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const itemsPerPage = 5; // Change this value as needed
+            const offres = document.querySelectorAll('#tableac tbody tr');
+            const numPages = Math.ceil(offres.length / itemsPerPage);
+
+            function paginate(page) {
+                offres.forEach((offre, index) => {
+                    const start = (page - 1) * itemsPerPage;
+                    const end = start + itemsPerPage;
+                    if (index >= start && index < end) {
+                        offre.style.display = 'table-row';
+                    } else {
+                        offre.style.display = 'none';
+                    }
+                });
+            }
+
+            function createPaginationLinks() {
+                const paginationContainer = document.querySelector('.pagination-container');
+                for (let i = 1; i <= numPages; i++) {
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.textContent = i;
+                    link.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        paginate(i);
+                    });
+                    paginationContainer.appendChild(link);
+                    paginationContainer.appendChild(document.createTextNode(' '));
+                }
+            }
+
+            createPaginationLinks();
+            paginate(1); // Show the first page initially
+        });
+    </script>
 {% endblock %}

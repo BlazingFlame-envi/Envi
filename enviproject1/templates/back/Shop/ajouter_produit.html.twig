@@ -1,7 +1,11 @@
 {% extends '/homeback.html.twig' %}
 
 {% block body %}
-
+<style>
+    li {
+        color: red;
+    }
+</style>
 
     <div class="content-body">
 
@@ -19,22 +23,22 @@
         <div class="container-fluid">
             <div class="col-sm-6 col-md-4">
                 {{ form_start(form) }}
-                {{ form_row(form.nom_produit, {'attr': {'class': 'form-control mb-3'}}) }}
+                {{ form_row(form.nom_produit, {'attr': {'class': 'form-control mb-3'}, 'required': false}) }}
 
             </div>
 
             <div class="col-sm-6 col-md-4">
-                {{ form_row(form.prix, {'attr': {'class': 'form-control mb-3'}}) }}
-
-            </div>
-            <br>
-            <div class="col-sm-6 col-md-4">
-                {{ form_row(form.quantite, {'attr': {'class': 'form-control mb-3'}}) }}
+                {{ form_row(form.prix, {'attr': {'class': 'form-control mb-3'}, 'required': false}) }}
 
             </div>
             <br>
             <div class="col-sm-6 col-md-4">
-                {{ form_row(form.id_categorie, {'attr': {'class': 'form-control mb-3'}}) }}
+                {{ form_row(form.quantite, {'attr': {'class': 'form-control mb-3'}, 'required': false}) }}
+
+            </div>
+            <br>
+            <div class="col-sm-6 col-md-4">
+                {{ form_row(form.id_categorie, {'attr': {'class': 'form-control mb-3'}, 'required': false}) }}
                 {{ form_errors(form.id_categorie) }}
             </div>
             <br>

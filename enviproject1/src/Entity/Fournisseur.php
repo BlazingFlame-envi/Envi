@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\FournisseurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Equipement;
+use App\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: FournisseurRepository::class)]
 class Fournisseur
@@ -15,24 +17,63 @@ class Fournisseur
     #[ORM\Column]
     private ?int $id = null;
 
+
+  #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+$/',
+        message: 'Le nom ne doit contenir que des lettres.'
+    )]
+
     #[ORM\Column(length: 255)]
     private ?string $nom_fr = null;
 
+
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+#[Assert\Regex(
+        pattern: '/^[a-zA-Z]+$/',
+        message: 'Le nom ne doit contenir que des lettres.'
+    )]
+
     #[ORM\Column(length: 255)]
     private ?string $prenom_fr = null;
-
+#[Assert\Regex(
+    pattern: '/^\d+$/',
+    message: 'This field should only contain positive numbers and cannot include negative numbers.'
+)]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+    #[Assert\Regex(
+        pattern: '/^\d+$/',
+        message: 'Ce champ doit contenir uniquement des chiffres.'
+    )]
     #[ORM\Column]
     private ?int $age_fr = null;
 
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+     #[Assert\Regex(
+        pattern: '/^(?=.*[a-zA-Z])(?=.*\d).+$/',
+        message: 'Ce champ doit contenir obligatoirement des lettres et des chiffres.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $adress_fr = null;
 
-    #[ORM\OneToMany(mappedBy: 'fournisseur', targetEntity: Equipement::class, orphanRemoval: true)]
-    private Collection $equipement;
+    #[ORM\ManyToOne(inversedBy: 'fournisseurs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Equipement $equipement = null;
 
-    public function __construct()
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    #[ORM\JoinColumn(name:"id_user",nullable: false)]
+    private ?User $user = null;
+
+    public function getUser(): ?User
     {
-        $this->equipement = new ArrayCollection();
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -88,32 +129,14 @@ class Fournisseur
         return $this;
     }
 
-    /**
-     * @return Collection<int, Equipement>
-     */
-    public function getEquipement(): Collection
+    public function getEquipement(): ?Equipement
     {
         return $this->equipement;
     }
 
-    public function addEquipement(Equipement $equipement): static
+    public function setEquipement(?Equipement $equipement): static
     {
-        if (!$this->equipement->contains($equipement)) {
-            $this->equipement->add($equipement);
-            $equipement->setFournisseur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipement(Equipement $equipement): static
-    {
-        if ($this->equipement->removeElement($equipement)) {
-            // set the owning side to null (unless already changed)
-            if ($equipement->getFournisseur() === $this) {
-                $equipement->setFournisseur(null);
-            }
-        }
+        $this->equipement = $equipement;
 
         return $this;
     }

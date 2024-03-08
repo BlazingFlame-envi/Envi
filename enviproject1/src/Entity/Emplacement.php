@@ -6,32 +6,63 @@ use App\Repository\EmplacementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: EmplacementRepository::class)]
 class Emplacement
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue] 
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 4,
+        max: 15,
+        minMessage: 'The emplacement name must be at least {{ limit }} characters long',
+        maxMessage: 'The emplacement cannot be longer than {{ limit }} characters',
+    )]
     #[ORM\Column(length: 255)]
     private ?string $nom_em = null;
-
+    #[Assert\NotBlank]
+    #[Assert\Positive]
     #[ORM\Column]
     private ?float $cout = null;
-
+    #[Assert\NotBlank]
+    #[Assert\Positive]
     #[ORM\Column]
     private ?int $capacite = null;
 
     #[ORM\OneToMany(mappedBy: 'emplacement', targetEntity: Cours::class, orphanRemoval: true)]
     private Collection $cours;
 
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    #[ORM\JoinColumn(name:"id_user",nullable: false)]
+    private ?User $user = null;
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     public function __construct()
     {
         $this->cours = new ArrayCollection();
     }
-
+    public function __toString()
+    {
+        return $this->getNomEm();
+    }
     public function getId(): ?int
     {
         return $this->id;

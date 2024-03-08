@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\EquipementRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: EquipementRepository::class)]
 class Equipement
@@ -13,24 +16,73 @@ class Equipement
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+$/',
+        message: 'Le nom ne doit contenir que des lettres.'
+    )]
+
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
     #[ORM\Column(length: 255)]
     private ?string $nom_eq = null;
 
+        
+    
+    
+     #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+     #[Assert\Regex(
+        pattern: '/^(?=.*[a-zA-Z])(?=.*\d).+$/',
+        message: 'Ce champ doit contenir obligatoirement des lettres et des chiffres.'
+    )]
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
     #[ORM\Column(length: 255)]
     private ?string $type_eq = null;
 
+        #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+       
     #[ORM\Column(length: 255)]
     private ?string $disponibilite_eq = null;
 
+        #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
     #[ORM\Column]
     private ?int $quantite_eq = null;
+
+
+    #[Assert\NotBlank(message: 'Ce champ ne peut pas être vide.')]
+#[Assert\Regex(
+    pattern: '/^\d+\.\d+$/',
+    message: 'This field must contain a floating-point number with a mandatory decimal part.'
+)]
 
     #[ORM\Column]
     private ?float $prix_eq = null;
 
-    #[ORM\ManyToOne(inversedBy: 'equipement')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Fournisseur $fournisseur = null;
+    #[ORM\OneToMany(mappedBy: 'equipement', targetEntity: Fournisseur::class, orphanRemoval: true)]
+    private Collection $fournisseurs;
+
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    #[ORM\JoinColumn(name:"id_user",nullable: false)]
+    private ?User $user = null;
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getNomEq();
+    }
+    public function __construct()
+    {
+        $this->fournisseurs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -97,15 +149,23 @@ class Equipement
         return $this;
     }
 
-    public function getFournisseur(): ?Fournisseur
+    /**
+     * @return Collection<int, Fournisseur>
+     */
+    public function getFournisseurs(): Collection
     {
-        return $this->fournisseur;
+        return $this->fournisseurs;
     }
 
-    public function setFournisseur(?Fournisseur $fournisseur): static
+    public function addFournisseur(Fournisseur $fournisseur): static
     {
-        $this->fournisseur = $fournisseur;
+        if (!$this->fournisseurs->contains($fournisseur)) {
+            $this->fournisseurs->add($fournisseur);
+            $fournisseur->setEquipement($this);
+        }
 
         return $this;
     }
+
+  
 }

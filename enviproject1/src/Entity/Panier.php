@@ -26,8 +26,8 @@ class Panier
 
 
 
-    #[ORM\ManyToOne(inversedBy: 'User')]
-    #[ORM\JoinColumn(name: "id_user", nullable: true)]
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER')]
+    #[ORM\JoinColumn(name: "id_user", referencedColumnName: "id", nullable: true)]
     private ?User $id_user = null;
 
 

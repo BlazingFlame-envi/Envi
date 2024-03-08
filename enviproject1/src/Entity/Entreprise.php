@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use App\Entity\User;
 #[ORM\Entity(repositoryClass: EntrepriseRepository::class)]
 class Entreprise
 {
@@ -38,11 +38,29 @@ class Entreprise
     #[ORM\Column(length: 255)]
     private ?string $tel = null;
 
+    #[Assert\Regex(
+        pattern: '/^\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b$/',
+        message: 'L\'adresse email doit être valide.'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $mail_e = null;
 
     #[ORM\OneToMany(mappedBy: 'entreprise', targetEntity: Offre::class,orphanRemoval: true)]
     private Collection $offres;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
+    #[ORM\ManyToOne(inversedBy: 'user')]
+    #[ORM\JoinColumn(name:"id_user",nullable: false)]
+    private ?User $user = null;
+
+
+      // Ajoutez un attribut pour gérer le fichier uploadé, qui ne sera pas persisté en base de données
+    /**
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
+     */
+    private $imageFile;
 
     public function __construct()
     {
@@ -107,6 +125,43 @@ class Entreprise
 
         return $this;
     }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    public function getImageFile(): ?string
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(string $imageFile): static
+    {
+        $this->imageFile = $imageFile;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 
     /**
      * @return Collection<int, Offre>

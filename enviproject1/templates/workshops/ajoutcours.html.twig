@@ -1,0 +1,65 @@
+{% extends 'basefront.html.twig' %}
+
+
+
+
+{% block image %}{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% block body %}
+<body id="body">
+
+
+<div class="hero-slider">
+        <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});" style="height: 100vh;">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        
+                            <div class="card-body">
+                                
+<h1 class="text-white"> Add Workshop </h1>
+{{form_start(f,{'attr':{'novalidate':'novalidate', 'class': 'text-white','class': 'text-danger'}})}}
+{{form_label(f.nom_c,"Name Workshop", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.nom_c, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.nom_c, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.nom_tuteur,"Name Tuto", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.nom_tuteur, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.nom_tuteur, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.date_c,"Date", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.date_c, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.date_c, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.duree_c,"Duration", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.duree_c, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.duree_c, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(f.emplacement,"Emplacement", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(f.emplacement, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(f.emplacement, {'attr': {'class': 'form-control'}})}}
+<br>
+<div  class="text-center">
+    <button type="submit" class="btn btn-success btn-lg">Submit</button>
+</div>
+{{form_end(f)}}
+
+
+                            </div>
+                        </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

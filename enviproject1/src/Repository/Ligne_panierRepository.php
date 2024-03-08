@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class Ligne_panierRepository extends ServiceEntityRepository
 {
-    public function findByPanierAndProduit($id_panier , $id_produit)
+    public function findByPanierAndProduit($id_panier, $id_produit)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.id_panier = :id_panier')
@@ -21,6 +21,15 @@ class Ligne_panierRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+    public function findByLignePanierByPanier($id_panier)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.id_panier = :id_panier')
+            ->setParameter('id_panier', $id_panier)
+            ->getQuery()
+            ->getResult();
+    }
 
 
     public function __construct(ManagerRegistry $registry)

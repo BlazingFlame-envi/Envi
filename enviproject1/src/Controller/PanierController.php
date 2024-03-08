@@ -5,11 +5,13 @@ namespace App\Controller;
 
 use App\Entity\Ligne_panier;
 use App\Entity\Panier;
+use App\Entity\PanierDTO;
 use App\Entity\Produit;
 use App\Entity\User;
 use App\Repository\CategorieRepository;
 use App\Repository\PanierRepository;
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Controller\SmsService;
-use App\Controller\EmailService;
+
 
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -101,11 +103,12 @@ class PanierController extends AbstractController
 
 
     #[Route('/payer/{id_user}', name: 'payer_panier')]
-    public function payerPanier($id_user, EntityManagerInterface $entityManagerInterface, PanierRepository $panierRepository,SerializerInterface $serializer,SmsService $smsService, EmailService $emailService): JsonResponse
+    public function payerPanier($id_user, EntityManagerInterface $entityManagerInterface, PanierRepository $panierRepository,SerializerInterface $serializer,SmsService $smsService): JsonResponse
     {
 
         $user = $entityManagerInterface->getRepository(User::class)->findOneBy(['id' => $id_user]);
         $panier = $entityManagerInterface->getRepository(Panier::class)->findLastPanierByUser($user->getId());
+
 
 
         if (count($panier) == 0) {
@@ -140,7 +143,7 @@ class PanierController extends AbstractController
                     $email_msg .= " Remarque : ".$quantite_manquante_msg;
                 }
 
-            //$this->sendEmail($emailService,"Commande passée : ".$mon_panier->getRef() , $email_msg );
+            //$this->sendEmail( $mailer);
 
             return new JsonResponse($serializer->serialize("Votre achat est effectuer avec succes", 'json'));
 
@@ -150,6 +153,84 @@ class PanierController extends AbstractController
 
 
     }
+
+    #[Route('/historique', name: 'historique_achat_user')]
+    public function historique_achat( EntityManagerInterface $entityManagerInterface, PanierRepository $panierRepository,SerializerInterface $serializer)
+    {
+        $user_panier = $entityManagerInterface->getRepository(Panier::class)->findPaniersByUser($this->getUser());
+
+
+        $PanierHitoriqe = [] ;
+
+
+
+    //    array_push($PanierHitoriqe, current($user_panier));
+        foreach ($user_panier as $panier) {
+
+            $lignesPanier = $entityManagerInterface->getRepository(Ligne_panier::class)->findBy(['id_panier' => $panier->getId()]);
+            $PanierDTO = new PanierDTO();
+            $PanierDTO->setRef($panier->getRef());
+            $PanierDTO->setId($panier->getId());
+            $PanierDTO->setEtat($panier->getEtat());
+
+            $lignesPanier = $entityManagerInterface->getRepository(Ligne_panier::class)->findBy(['id_panier' => $panier->getId()]);
+
+            $listLignePanier = new ArrayCollection();
+            foreach ($lignesPanier as $Lpanier) {
+
+                $listLignePanier->add($Lpanier);
+                $PanierDTO->setLignePaniers($listLignePanier);
+                $prix = $PanierDTO->getPrixTotal()  ;
+                $PanierDTO->setPrixTotal( $prix + ($Lpanier->getIdProduit()->getPrix() * $Lpanier->getQuantite() ));
+
+            }
+
+            array_push($PanierHitoriqe, $PanierDTO);
+        }
+
+        return $this->render('front/Shop/historique.html.twig',['list_panier'=> $PanierHitoriqe]);
+
+    }
+
+    #[Route('/historique_back', name: 'historique_achat_all')]
+    public function historique_back( EntityManagerInterface $entityManagerInterface, PanierRepository $panierRepository,SerializerInterface $serializer)
+    {
+        $user_panier = $entityManagerInterface->getRepository(Panier::class)->findAll();
+
+
+        $PanierHitoriqe = [] ;
+
+
+
+        //    array_push($PanierHitoriqe, current($user_panier));
+        foreach ($user_panier as $panier) {
+
+            $lignesPanier = $entityManagerInterface->getRepository(Ligne_panier::class)->findBy(['id_panier' => $panier->getId()]);
+            $PanierDTO = new PanierDTO();
+            $PanierDTO->setRef($panier->getRef());
+            $PanierDTO->setId($panier->getId());
+            $PanierDTO->setEtat($panier->getEtat());
+            $PanierDTO->setIdUser($panier->getIdUser());
+            $lignesPanier = $entityManagerInterface->getRepository(Ligne_panier::class)->findBy(['id_panier' => $panier->getId()]);
+
+            $listLignePanier = new ArrayCollection();
+            foreach ($lignesPanier as $Lpanier) {
+
+                $listLignePanier->add($Lpanier);
+                $PanierDTO->setLignePaniers($listLignePanier);
+                $prix = $PanierDTO->getPrixTotal()  ;
+                $PanierDTO->setPrixTotal( $prix + ($Lpanier->getIdProduit()->getPrix() * $Lpanier->getQuantite() ));
+
+            }
+
+            array_push($PanierHitoriqe, $PanierDTO);
+        }
+
+        return $this->render('Back/Shop/historique.html.twig',['list_panier'=> $PanierHitoriqe]);
+
+    }
+
+
 
     public function sendSms(SmsService $smsService , $numbers , $message): Response
     {
@@ -162,18 +243,9 @@ class PanierController extends AbstractController
         }
     }
 
-    public function sendEmail(MailerInterface $mailer)
-    {
-        $email = (new Email())
-            ->from('Marouen.BenMohamed@esprit.tn')
-            ->to('Marouen.BenMohamed@esprit.tn')
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
 
-        $mailer->send($email);
 
-        // Redirect or inform the user that the email has been sent
-    }
+
+
 }
 

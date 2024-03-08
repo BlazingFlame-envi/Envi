@@ -45,4 +45,14 @@ class OffreRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+public function getOffreByUser($user)
+{
+    return $this->createQueryBuilder('e')
+        ->where('e.user = :user')
+        ->setParameter('user', $user) 
+        ->getQuery()
+        ->getResult();
+}
+
 }

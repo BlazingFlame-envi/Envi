@@ -1,0 +1,64 @@
+{% extends 'basefront.html.twig' %}
+
+
+{% block image %}{% endblock %}
+{% block body %}
+<body id="body">
+
+
+<div class="hero-slider">
+        <div class="slider-item th-fullpage hero-area d-flex align-items-center justify-content-center" style="background-image: url({{ asset('front/images/slider/envi.jpg')}});" style="height: 100vh;">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        
+                            <div class="card-body">
+                                
+<h1 class="text-white"> Modify Tache </h1>
+{{form_start(form,{'attr':{'novalidate':'novalidate', 'class': 'text-white','class': 'text-danger'}})}}
+{{form_label(form.nom_t,"Name", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.nom_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.nom_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.type_t,"Type", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.type_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.type_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.empl_t,"Emplacement", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.empl_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.empl_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.date_t,"Date", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.date_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.date_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.nbpart_t,"Nombre de participants", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.nbpart_t, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.nbpart_t, {'attr': {'class': 'form-control'}})}}
+<br>
+{{form_label(form.succes,"Succes", {'label_attr': {'class': 'text-white'}})}}
+{{form_errors(form.succes, {'attr': {'class': 'text-danger'}})}}
+{{form_widget(form.succes, {'attr': {'class': 'form-control'}})}}
+<br>
+
+<div  class="text-center">
+    <button href="{{ path('app_taches_index') }}" type="submit" class="btn btn-success btn-lg">modify</button>
+</div>
+{{form_end(form)}}
+
+
+                            </div>
+                        </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+
+

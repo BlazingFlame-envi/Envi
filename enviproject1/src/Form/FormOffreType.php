@@ -18,7 +18,7 @@ class FormOffreType extends AbstractType
             ->add('entreprise')
             ->add('submit', SubmitType::class, [
                 'label' => 'Submit',
-                'attr' => ['class' => 'btn btn-primary btn-lg']
+                'attr' => ['class' => 'btn btn-success btn-lg']
             ])
         ;
     }
